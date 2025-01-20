@@ -1,0 +1,334 @@
+.top-bar {
+  position: absolute; /* Абсолютное позиционирование относительно родителя */
+  top: 0; /* Прижимаем к верхней границе */
+  left: 0; /* Прижимаем к левой границе */
+  width: 500px; /* Ширина панели */
+  height: 235px; /* Высота панели */
+  background: url('./assets/top_bar.png') no-repeat center center;
+  background-size: cover; /* Масштабирование фонового изображения */
+  display: flex;
+  align-items: center; /* Выравнивание по вертикали */
+  justify-content: space-between; /* Равномерное распределение элементов */
+  padding: 1px; /* Отступ внутри панели */
+  box-sizing: border-box; /* Учитываем padding в общей ширине и высоте */
+}
+
+.bar-text {
+  position: absolute;
+  width: 100%; /* Ширина текста совпадает с шириной полосы */
+  height: 100%; /* Высота текста совпадает с высотой полосы */
+  display: flex; /* Flexbox для выравнивания */
+  align-items: center; /* Центрируем текст по вертикали */
+  justify-content: center; /* Центрируем текст по горизонтали */
+  color: white; /* Цвет текста */
+  font-family: Arial, sans-serif; /* Шрифт */
+  font-size: 20px; /* Размер шрифта */
+  font-weight: bold; /* Жирный текст */
+  z-index: 2; /* Располагаем текст поверх других элементов */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Тень текста */
+  transform: translate(-20px, -12px); /* Регулируем положение текста */
+  box-sizing: border-box; /* Учитываем отступы и границы */
+}
+
+.health-bar, .energy-bar {
+  position: relative;
+  width: 350px;  /* Ширина полоски */
+  height: 70px;  /* Высота полоски */
+  margin-top: 1px;  /* Отступ от других элементов */
+  right: -40%; /* Сдвиг влево */
+  top: 15%; /* Сдвиг вниз */
+}
+
+.character-frame {
+  position: absolute; /* Позиционирование относительно .top-bar */
+  top: 10; /* Прижимаем к верхнему краю родителя */
+  left: 0; /* Прижимаем к левому краю родителя */
+  width: 150px; /* Задаём ширину рамки */
+  height: 150px; /* Задаём высоту рамки */
+  background: url('./assets/frame_character.png') no-repeat center center; /* Фон */
+  background-size: contain; /* Масштабируем фон по рамке */
+  z-index: 10; /* Обеспечиваем видимость поверх других элементов */
+}
+
+/* Новый стиль для отображения урона */
+.damage-text {
+  position: absolute;
+  top: 80%;
+  left: 70%;
+  righ: 15%;
+  transform: translate(50%, 50%); /* Центрируем по горизонтали и вертикали */
+  font-family: Arial, sans-serif;
+  font-size: 30px; /* Размер шрифта */
+  font-weight: bold; /* Жирный шрифт */
+  color: white; /* Белый цвет текста */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
+  z-index: 1000; /* Убедимся, что текст урона будет поверх других элементов */
+}
+
+/* Уведомление о тренировке */
+#custom-alert-train {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  
+  width: 600px;
+  height: 600px;
+  background: url('./assets/notification_plate_train.png') no-repeat center center;
+  background-size: cover;
+  z-index: 1000;
+  display: none;
+}
+
+/* Уведомление о поедании еды */
+#custom-alert-eat {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: url('./assets/notification_plate_eat.png') no-repeat center center;
+  background-size: cover;
+  z-index: 1000;
+  display: none;
+}
+
+/* Уведомление о повышении уровня */
+#custom-alert-lvlup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: url('./assets/notification_plate_lvlup.png') no-repeat center center;
+  background-size: cover;
+  z-index: 1000;
+  display: none;
+}
+
+/* Уведомление о недостатке энергии */
+#custom-alert-noenergy {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: url('./assets/notification_plate_noenergy.png') no-repeat center center;
+  background-size: cover;
+  z-index: 1000;
+  display: none;
+}
+
+/* Кнопки нижней панели */
+.bottom-panel {
+  position: absolute; /* Панель позиционируется относительно окна браузера */
+  bottom: 0; /* Фиксация у нижнего края экрана */
+  width: 100%; /* Панель занимает всю ширину экрана */
+  height: 184px; /* Задаём фиксированную высоту */
+  background: url('./assets/bottom_panel.png') no-repeat center center;
+  background-size: cover; /* Изображение фона масштабируется */
+  display: flex; /* Используется для выравнивания содержимого панели */
+  justify-content: space-between; /* Распределение элементов по ширине */
+  align-items: center; /* Вертикальное выравнивание элементов */
+}
+
+.coin {
+  display: flex;
+  align-items: center; /* Выравнивание текста и иконки по вертикали */
+  gap: -5px; /* Отступ между иконкой и текстом */
+  position: absolute;
+  bottom: 55px; /* Сдвиг от верхнего края */
+  right: 255px; /* Сдвиг от правого края */
+}
+
+.coin img {
+  width: 80px; /* Размер иконки монеты */
+  height: 80px;
+}
+
+#coins {
+  font-family: Arial, sans-serif;
+  font-size: 20px; /* Размер шрифта */
+  font-weight: bold; /* Жирный шрифт */
+  color: white; /* Белый цвет текста */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
+  right: 10px; /* Сдвиг от правого края */
+}
+
+.level {
+  display: flex;
+  align-items: center; /* Выравнивание текста и иконки по вертикали */
+  gap: 1px; /* Отступ между иконкой и текстом */
+  position: absolute;
+  bottom: 55px; /* Сдвиг от верхнего края */
+  right: 130px; /* Сдвиг от правого края */
+}
+
+.level img {
+  width: 90px; /* Размер иконки уровня */
+  height: 90px;
+}
+
+#level {
+  font-family: Arial, sans-serif;
+  font-size: 20px; /* Размер шрифта */
+  font-weight: bold; /* Жирный шрифт */
+  color: white; /* Белый цвет текста */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
+}
+
+.button {
+  position: absolute; /* Абсолютное позиционирование для отдельных кнопок */
+  width: 300px; /* Ширина кнопки */
+  height: 120px; /* Высота кнопки */
+  background-size: contain; /* Масштабирование изображения */
+  background-repeat: no-repeat; /* Изображение не повторяется */
+  border: none; /* Без рамки */
+  cursor: pointer; /* Курсор при наведении */
+  background-color: transparent; /* Прозрачный фон */
+}
+
+.map {
+  background-image: url('./assets/map.png');
+  position: absolute; /* Абсолютное позиционирование кнопки */
+  left: 849px; /* Горизонтальное положение */
+  bottom: 34px; /* Положение относительно нижней границы панели */
+  width: 300px; /* Ширина кнопки */
+  height: 280px; /* Высота кнопки */
+  z-index: 10; /* Устанавливаем приоритет отображения выше панели */
+}
+
+.train {
+  background-image: url('./assets/training.png');
+  left: 597px; /* Позиция по горизонтали */
+  bottom: 95px; /* Позиция относительно нижней границы панели */
+}
+
+.eat {
+  background-image: url('./assets/eat.png');
+  right: 550px; /* Позиция по горизонтали */
+  bottom: 95px; /* Позиция относительно нижней границы панели */
+}
+
+/* Стиль для кнопки инвентаря */
+#inventory-button {
+  position: absolute;
+  bottom: 110px;  /* Расположение снизу */
+  left: 220px;    /* Расположение слева */
+  width: 300px;   /* Ширина кнопки */
+  height: 120px;  /* Высота кнопки */
+  background-image: url('./assets/inventory.png'); /* Картинка кнопки */
+  background-size: cover; /* Обеспечиваем, чтобы картинка покрывала кнопку */
+  background-repeat: no-repeat;
+  cursor: pointer;
+  z-index: 1000; /* Убедимся, что кнопка будет на переднем плане */
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Легкая тень для кнопки */
+  background-color: transparent; /* Прозрачный фон */
+}
+
+/* Стиль для всплывающего окна инвентаря */
+#inventory-modal {
+  display: none;  /* Скрыто по умолчанию */
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1300px; 
+  height: 830px;  
+  background-image: url('./assets/inventory_window.png');  /* Фон окна инвентаря */
+  background-size: cover;    
+  z-index: 1002;  /* На переднем плане */  
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr); /* Сетка 14 слотов в ряд */
+  gap: -10px; /* Расстояние между слотами */
+  left: 150px; /* Сдвиг вправо */
+  top: 120px;  /* Сдвиг вниз */
+}
+
+/* Затемнение фона */
+#overlay {
+  display: none; /* Скрыт по умолчанию */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+  backdrop-filter: blur(5px); /* Эффект размытия */
+  z-index: 1001; /* На переднем плане, но ниже инвентаря */
+  pointer-events: none; /* По умолчанию нельзя кликать */
+}
+
+/* Стиль для кнопки закрытия инвентаря */
+#close-inventory {
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  background-image: url('./assets/close_button.png');  /* Картинка кнопки закрытия */
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+  z-index: 1003;
+  background-color: transparent; /* Прозрачный фон */
+}
+
+/* Эффект на кнопку закрытия при наведении */
+#close-inventory:hover {
+  opacity: 0.8;
+}
+
+.inventory-slot {
+  width: 64px; /* Размер слота */
+  height: 64px; /* Размер слота */  
+  display: flex;
+  align-items: center; /* Центрирование предмета по вертикали */
+  justify-content: center; /* Центрирование предмета по горизонтали */
+  margin: 5px; /* Отступы между слотами */
+  position: relative; /* Для вложенных элементов, таких как подсказки */
+  left: 25px; /* Сдвиг вправо */
+  top: 130px;  /* Сдвиг вниз */
+  margin: 9px -15px; /* Верхний/нижний 5px, левый/правый 15px */
+}
+
+.inventory-slot img {
+  width: 80%; /* Размер предмета внутри слота */
+  height: 80%;
+  pointer-events: none; /* Отключение взаимодействия с изображением */
+}
+
+.inventory-slot:hover::after {
+  content: attr(data-tooltip); /* Текст подсказки из атрибута data-tooltip */
+  position: absolute;
+  bottom: 110%; /* Сместить подсказку над слотом */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 100; /* На передний план */
+  font-size: 12px;
+  text-align: center;
+  pointer-events: none; /* Отключить взаимодействие */
+}
+
+.inventory-slot.dragging {
+  opacity: 0.5; /* Полупрозрачность для слота при перетаскивании */
+}
+
+.inventory-slot.over {
+  border: 2px dashed #fff; /* Указание на целевой слот для предмета */
+}
+
+
+

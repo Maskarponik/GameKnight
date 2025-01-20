@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Game</title>
+  <link rel="stylesheet" href="./globals.css">
+  <link rel="stylesheet" href="./gamestyle.css">
+</head>
+<body>
+  <div id="game-container" style="position: absolute; width: 100%; height: 100%;">
+
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+      <div class="character-frame" id="character-frame"></div>
+      <div class="stats">
+        <div class="stat">
+          <div class="health-bar">
+            <span class="bar-text" id="health-text">100 / 100</span>
+            <img class="bar-full" id="health-bar" src="./assets/health_bar_full.png" alt="Health Full">
+          </div>
+        </div>
+        <div class="stat">
+          <div class="energy-bar">
+            <span class="bar-text" id="energy-text">100 / 100</span>
+            <img class="bar-full" id="energy-bar" src="./assets/energy_bar_full.png" alt="Energy Full">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Нижняя панель -->
+    <div class="bottom-panel">
+      <button class="button map" id="map-button"></button>
+      <button class="button train" id="train-button"></button>
+      <button class="button eat" id="eat-button"></button>
+
+      <!-- Элементы Level и Coin -->
+      <div class="coin">
+        <img src="./assets/coin_icon.png" alt="Coins">
+        <span id="coins">1000</span>
+      </div>
+      <div class="level">
+        <img src="./assets/level_icon.png" alt="Level Icon">
+        <span id="level">1</span>
+      </div>
+    </div>
+
+    <!-- Кнопка инвентаря -->
+    <button id="inventory-button"></button>
+
+    <!-- Модальное окно для инвентаря -->
+    <div id="overlay"></div>
+    <div id="inventory-modal">     
+      <button id="close-inventory"></button> <!-- Кнопка закрытия -->           
+      <div id="inventory-slots" style="display: grid; grid-template-columns: repeat(14, 1fr);">
+        <!-- Здесь будут отображаться предметы инвентаря -->
+      </div>
+    </div>
+
+    <!-- Блок для отображения урона -->
+    <div class="damage-text" id="damage-text">DMG 20</div>
+
+    <!-- Уведомление о награде -->
+    <div id="reward-message" class="reward-message" style="display: none;">
+      <div class="reward-content">
+        <span id="reward-text">Поздравляем! Вы повысили уровень!</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="./inventory.js"></script>
+  <script type="module" src="./gamescript.js"></script>
+  <script src="./responsive.js"></script>
+</body>
+</html>

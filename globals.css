@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: black;
+  font-family: Arial, sans-serif;
+}
+
+#game-container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  height: 1080px;
+  background: url('./assets/background.png') no-repeat center center;
+  background-size: cover;
+}
+
+#fight-container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  height: 1080px;
+  background: url('./assets/battle_background.png') no-repeat center center;
+  background-size: cover;
+}
