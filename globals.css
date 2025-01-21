@@ -18,11 +18,31 @@ body {
   background-size: cover;
 }
 
-#fight-container {
+#forest-container {
   position: relative;
   width: 100%;
   max-width: 1920px;
   height: 1080px;
-  background: url('./assets/battle_background.png') no-repeat center center;
+  background: url('./assets/forest_background.png') no-repeat center center;
+  background-size: cover;
+}
+
+#map-container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  height: 1080px;
+  background: url('./assets/map_background.png') no-repeat center center fixed;
+  background-size: cover; /* Фон будет покрывать весь контейнер */
+  background-attachment: fixed;  
+}
+
+
+#cemetery-container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  height: 1080px;
+  background: url('./assets/cemetery_background.png') no-repeat center center;
   background-size: cover;
 }

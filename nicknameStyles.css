@@ -1,0 +1,45 @@
+/* nicknameStyles.css */
+
+/* Контейнер для никнейма */
+#nickname-container {
+  position: absolute; /* Убедимся, что позиционирование правильное */
+  z-index: 1000; /* Выставим приоритет выше, чтобы элементы сверху не перекрывали */
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.9); /* Легкий фон для видимости */
+  border: 1px solid #ccc;  
+  border-radius: 5px;
+  top: 4px; /* Начальная позиция */
+  left: 145px; /* Начальная позиция */
+}
+
+/* Форма для ввода никнейма */
+#nickname-form {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Поле ввода */
+#nickname-input {
+  flex: 1;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  outline: none;
+}
+
+/* Кнопка сохранения */
+#nickname-form button {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px;
+}
+
+#nickname-form button:hover {
+  background-color: #0056b3;
+}

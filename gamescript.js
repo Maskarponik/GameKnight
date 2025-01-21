@@ -1,14 +1,32 @@
 import { inventory, addToInventory, updateInventoryUI, initializeInventorySlots } from './inventory.js';
+import NicknameSystem from './nicknameSystem.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Загрузка состояния игрока из localStorage или инициализация по умолчанию
-  let coins = parseInt(localStorage.getItem("coins") || "1000");
-  let level = parseInt(localStorage.getItem("level") || "1");
-  let health = parseInt(localStorage.getItem("health") || "100");
-  let maxHealth = parseInt(localStorage.getItem("maxHealth") || "100");
-  let energy = parseInt(localStorage.getItem("energy") || "100");
-  let maxEnergy = parseInt(localStorage.getItem("maxEnergy") || "100");
-  let attackPower = parseInt(localStorage.getItem("attackPower") || "10");
+  // Получение текущего никнейма
+  const currentNickname = localStorage.getItem("currentNickname");
+
+  if (!currentNickname) {
+    console.error("Текущий никнейм не установлен в localStorage!");
+    return;
+  }
+
+  // Проверка существования данных для текущего никнейма
+  if (!NicknameSystem.doesNicknameExist(currentNickname)) {
+    console.error("Данные для текущего никнейма отсутствуют в NicknameSystem!");
+    return;
+  }
+
+  // Загрузка данных игрока через NicknameSystem
+  const playerData = NicknameSystem.getPlayerData(currentNickname) || {};
+
+  // Инициализация переменных с fallback-значениями
+  let coins = playerData.coins ?? 1000;
+  let level = playerData.level ?? 1;
+  let health = playerData.health ?? 100;
+  let maxHealth = playerData.maxHealth ?? 100;
+  let energy = playerData.energy ?? 100;
+  let maxEnergy = playerData.maxEnergy ?? 100;
+  let attackPower = playerData.attackPower ?? 10;
 
   // Элементы страницы
   const mapButton = document.getElementById("map-button");
@@ -55,62 +73,13 @@ document.addEventListener("DOMContentLoaded", () => {
     updateInventoryUI(inventorySlotsContainer);
   }
 
-  // События для кнопок
-  inventoryButton?.addEventListener("click", () => {
-    document.getElementById("inventory-modal").style.display = "block";
-    const overlay = document.getElementById("overlay");
-    if (overlay) overlay.style.display = "block";
-  });
+  // Сохранение данных игрока
+  function savePlayerState() {
+    const updatedData = { coins, level, health, maxHealth, energy, maxEnergy, attackPower };
+    NicknameSystem.updatePlayerData(currentNickname, updatedData);
+  }
 
-  document.getElementById("close-inventory")?.addEventListener("click", () => {
-    document.getElementById("inventory-modal").style.display = "none";
-    const overlay = document.getElementById("overlay");
-    if (overlay) overlay.style.display = "none";
-  });
-
-  mapButton.addEventListener("click", () => {
-    if (energy > 0) {
-      energy -= 10;
-      savePlayerState();
-      window.location.href = "fight.html";
-    } else {
-      alert("Недостаточно энергии!");
-    }
-  });
-
-  trainButton.addEventListener("click", () => {
-    if (energy >= 10) {
-      energy -= 10;
-      level += 1;
-      maxHealth += 20;
-      health = maxHealth;
-      attackPower += 5;
-      updateUI();
-      showCustomAlert("custom-alert-train");
-    } else {
-      showCustomAlert("custom-alert-noenergy");
-    }
-    savePlayerState();
-  });
-
-  eatButton.addEventListener("click", () => {
-    if (energy >= maxEnergy) {
-      showCustomAlert("custom-alert-fullenergy");
-      return;
-    }
-
-    if (coins >= 50) {
-      coins -= 50;
-      energy = Math.min(maxEnergy, energy + 20);
-      showCustomAlert("custom-alert-eat");
-    } else {
-      showCustomAlert("custom-alert-noenergy");
-    }
-    updateUI();
-    savePlayerState();
-  });
-
-  // Функции
+  // Уведомления
   function showCustomAlert(alertId) {
     const alertElement = document.getElementById(alertId);
     if (alertElement) {
@@ -145,15 +114,54 @@ document.addEventListener("DOMContentLoaded", () => {
   createCustomAlert("custom-alert-noenergy", "./assets/notification_plate_noenergy.png");
   createCustomAlert("custom-alert-fullenergy", "./assets/notification_plate_eat_full.png");
 
-  function savePlayerState() {
-    localStorage.setItem("coins", coins);
-    localStorage.setItem("level", level);
-    localStorage.setItem("health", health);
-    localStorage.setItem("maxHealth", maxHealth);
-    localStorage.setItem("energy", energy);
-    localStorage.setItem("maxEnergy", maxEnergy);
-    localStorage.setItem("attackPower", attackPower);
-  }
+  // События для кнопок
+  inventoryButton?.addEventListener("click", () => {
+    document.getElementById("inventory-modal").style.display = "block";
+    const overlay = document.getElementById("overlay");
+    if (overlay) overlay.style.display = "block";
+  });
 
-  updateUI();
+  document.getElementById("close-inventory")?.addEventListener("click", () => {
+    document.getElementById("inventory-modal").style.display = "none";
+    const overlay = document.getElementById("overlay");
+    if (overlay) overlay.style.display = "none";
+  });
+
+  mapButton.addEventListener("click", () => {  
+      window.location.href = "map.html";    
+  });
+
+  trainButton.addEventListener("click", () => {
+    if (energy >= 10) {
+      energy -= 10;
+      level += 1;
+      maxHealth += 20;
+      health = maxHealth;
+      attackPower += 5;
+      updateUI();
+      showCustomAlert("custom-alert-train");
+    } else {
+      showCustomAlert("custom-alert-noenergy");
+    }
+    savePlayerState();
+  });
+
+  eatButton.addEventListener("click", () => {
+    if (energy >= maxEnergy) {
+      showCustomAlert("custom-alert-fullenergy");
+      return;
+    }
+
+    if (coins >= 50) {
+      coins -= 50;
+      energy = Math.min(maxEnergy, energy + 20);
+      showCustomAlert("custom-alert-eat");
+    } else {
+      showCustomAlert("custom-alert-noenergy");
+    }
+    updateUI();
+    savePlayerState();
+  });
+
+  updateUI(); // Обновляем интерфейс в начале
 });

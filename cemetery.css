@@ -1,0 +1,140 @@
+#battle-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url('./assets/cemetery_background.png') no-repeat center center;
+  background-size: cover;
+}
+
+.top-bar {
+  position: absolute; /* Абсолютное позиционирование относительно родителя */
+  top: 0; /* Прижимаем к верхней границе */
+  left: 0; /* Прижимаем к левой границе */
+  width: 500px; /* Ширина панели */
+  height: 235px; /* Высота панели */
+  background: url('./assets/top_bar.png') no-repeat center center;
+  background-size: cover; /* Масштабирование фонового изображения */
+  display: flex;
+  align-items: center; /* Выравнивание по вертикали */
+  justify-content: space-between; /* Равномерное распределение элементов */
+  padding: 1px; /* Отступ внутри панели */
+  box-sizing: border-box; /* Учитываем padding в общей ширине и высоте */
+}
+
+.bar-text {
+  position: absolute;
+  width: 100%; /* Ширина текста совпадает с шириной полосы */
+  height: 100%; /* Высота текста совпадает с высотой полосы */
+  display: flex; /* Flexbox для выравнивания */
+  align-items: center; /* Центрируем текст по вертикали */
+  justify-content: center; /* Центрируем текст по горизонтали */
+  color: white; /* Цвет текста */
+  font-family: Arial, sans-serif; /* Шрифт */
+  font-size: 20px; /* Размер шрифта */
+  font-weight: bold; /* Жирный текст */
+  z-index: 2; /* Располагаем текст поверх других элементов */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Тень текста */
+  transform: translate(-20px, -12px); /* Регулируем положение текста */
+  box-sizing: border-box; /* Учитываем отступы и границы */
+}
+
+.health-bar, .energy-bar {
+  position: relative;
+  width: 350px;  /* Ширина полоски */
+  height: 70px;  /* Высота полоски */
+  margin-top: 1px;  /* Отступ от других элементов */
+  right: -40%; /* Сдвиг влево */
+  top: 15%; /* Сдвиг вниз */
+}
+
+.character-frame {
+  position: absolute; /* Позиционирование относительно .top-bar */
+  top: 10; /* Прижимаем к верхнему краю родителя */
+  left: 0; /* Прижимаем к левому краю родителя */
+  width: 150px; /* Задаём ширину рамки */
+  height: 150px; /* Задаём высоту рамки */
+  background: url('./assets/frame_character.png') no-repeat center center; /* Фон */
+  background-size: contain; /* Масштабируем фон по рамке */
+  z-index: 10; /* Обеспечиваем видимость поверх других элементов */
+}
+
+.timer {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: Arial, sans-serif;
+  font-size: 36px;
+  color: white;
+}
+
+#fight-zone {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.bottom-panel {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 184px; /* Убедитесь, что высота задана */
+  background: url('./assets/bottom_panel.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100; /* Убедитесь, что панель видима поверх других элементов */
+}
+
+
+.coin {
+  display: flex;
+  align-items: center; /* Выравнивание текста и иконки по вертикали */
+  gap: -5px; /* Отступ между иконкой и текстом */
+  position: absolute;
+  bottom: 55px; /* Сдвиг от верхнего края */
+  right: 255px; /* Сдвиг от правого края */
+  z-index: 100; /* Убедитесь, что панель видима поверх других элементов */
+}
+
+.coin img {
+  width: 80px; /* Размер иконки монеты */
+  height: 80px;
+}
+
+#coins {
+  font-family: Arial, sans-serif;
+  font-size: 20px; /* Размер шрифта */
+  font-weight: bold; /* Жирный шрифт */
+  color: white; /* Белый цвет текста */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
+  right: 10px; /* Сдвиг от правого края */
+}
+
+.level {
+  display: flex;
+  align-items: center; /* Выравнивание текста и иконки по вертикали */
+  gap: 1px; /* Отступ между иконкой и текстом */
+  position: absolute;
+  bottom: 55px; /* Сдвиг от верхнего края */
+  right: 130px; /* Сдвиг от правого края */
+  z-index: 100; /* Убедитесь, что панель видима поверх других элементов */
+}
+
+.level img {
+  width: 90px; /* Размер иконки уровня */
+  height: 90px;
+}
+
+#level {
+  font-family: Arial, sans-serif;
+  font-size: 20px; /* Размер шрифта */
+  font-weight: bold; /* Жирный шрифт */
+  color: white; /* Белый цвет текста */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
+}

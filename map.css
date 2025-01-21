@@ -1,0 +1,106 @@
+/* map.css */
+
+/* Контейнер для кнопок (можно оставить пустым или использовать для общего позиционирования) */
+.map-buttons-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Скрываем все, что выходит за пределы контейнера */
+}
+
+/* Кнопка леса */
+.forest-button {
+  position: absolute;
+  width: 900px; /* Ширина кнопки */
+  height: 600px; /* Высота кнопки */
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  background-image: url('./assets/forest_button.png');
+  bottom: -4%; /* Отступ от верхней части экрана */
+  left: 28%; /* Отступ от левой части экрана */
+  overflow: hidden; /* Скрываем все, что выходит за пределы контейнера */
+}
+
+.forest-button:hover {
+  transform: scale(1.01);
+  transition: transform 0.2s;
+}
+
+/* Кнопка кладбища */
+.cemetery-button {
+  position: absolute;
+  width: 540px; /* Ширина кнопки */
+  height: 600px; /* Высота кнопки */
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  background-image: url('./assets/cemetery_button.png');
+  bottom: 11%; /* Отступ от нижней части экрана */
+  right: -9px; /* Отступ от правой части экрана */
+  overflow: hidden; /* Скрываем все, что выходит за пределы контейнера */
+}
+
+.cemetery-button:hover {
+  transform: scale(1.01);
+  transition: transform 0.2s;
+}
+
+/* Кнопка замка */
+.castle-button {
+  position: absolute;
+  width: 345px; /* Ширина кнопки */
+  height: 451px; /* Высота кнопки */
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  background-image: url('./assets/castle_button.png');
+  bottom: 25%; /* Отступ от нижней части экрана */
+  left: 233px; /* Отступ от правой части экрана */
+  overflow: hidden; /* Скрываем все, что выходит за пределы контейнера */
+}
+
+.castle-button:hover {
+  transform: scale(1.01);
+  transition: transform 0.2s;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Убедитесь, что body и html занимают 100% высоты */
+}
+
+/* Общий стиль текста для всех кнопок */
+.map-buttons-container button {
+  font-size: 35px; /* Размер текста */
+  font-weight: bold; /* Жирность текста */
+  color: #ffffff; /* Белый текст */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень текста */
+  text-transform: capitalize; /* Преобразует первую букву в заглавную */
+  text-align: center; /* Выравнивание текста */
+}
+
+/* Стили текста для кнопки леса */
+.forest-button {
+  font-size: 35px; /* Индивидуальный размер текста для кнопки леса */
+  color: #32cd32; /* Зеленый цвет текста */
+}
+
+/* Стили текста для кнопки кладбища */
+.cemetery-button {
+  font-size: 35px; /* Индивидуальный размер текста для кнопки кладбища */
+  color: #8b0000; /* Красный цвет текста */
+}
+
+/* Стили текста для кнопки замок */
+.castle-button {
+  font-size: 35px; /* Индивидуальный размер текста для кнопки замка */
+  color: #8b0000; /* Красный цвет текста */
+}

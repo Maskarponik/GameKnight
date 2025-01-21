@@ -6,6 +6,7 @@
   <title>Telegram Game</title>
   <link rel="stylesheet" href="./globals.css">
   <link rel="stylesheet" href="./gamestyle.css">
+  <link rel="stylesheet" href="./nicknameStyles.css">
 </head>
 <body>
   <div id="game-container" style="position: absolute; width: 100%; height: 100%;">
@@ -13,6 +14,10 @@
     <!-- Верхняя панель -->
     <div class="top-bar">
       <div class="character-frame" id="character-frame"></div>
+      
+      <!-- Контейнер для никнейма -->
+      <div id="nickname-container"></div>
+  
       <div class="stats">
         <div class="stat">
           <div class="health-bar">
@@ -51,13 +56,32 @@
 
     <!-- Модальное окно для инвентаря -->
     <div id="overlay"></div>
-    <div id="inventory-modal">     
-      <button id="close-inventory"></button> <!-- Кнопка закрытия -->           
+    <div id="inventory-modal">
+      <!-- Кнопка закрытия -->
+      <button id="close-inventory"></button>           
+
+      <!-- Слоты инвентаря -->
       <div id="inventory-slots" style="display: grid; grid-template-columns: repeat(14, 1fr);">
         <!-- Здесь будут отображаться предметы инвентаря -->
       </div>
-    </div>
 
+      <!-- Управляющие кнопки -->
+      <div id="inventory-controls">
+        <button id="sell-all-button">Продать всё</button>
+        <button id="sell-selected-button">Продать</button>
+      </div>
+    </div>   
+	
+    <!-- Модальное окно подтверждения -->
+    <div id="confirmation-modal" class="hidden">
+	    <p id="confirmation-text">Вы уверены, что хотите продать все предметы?</p>
+        <button id="confirm-yes-button">Да</button>
+        <button id="confirm-no-button">Нет</button>         
+	</div>
+	
+	<div class="inventory-slot">
+  </div>
+    
     <!-- Блок для отображения урона -->
     <div class="damage-text" id="damage-text">DMG 20</div>
 
@@ -70,8 +94,9 @@
 
   </div>
 
+  <script type="module" src="./nicknameSystem.js"></script>
   <script type="module" src="./inventory.js"></script>
-  <script type="module" src="./gamescript.js"></script>
+  <script type="module" src="./gamescript.js"></script>  
   <script src="./responsive.js"></script>
 </body>
 </html>

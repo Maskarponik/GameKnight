@@ -36,7 +36,7 @@
   height: 70px;  /* Высота полоски */
   margin-top: 1px;  /* Отступ от других элементов */
   right: -40%; /* Сдвиг влево */
-  top: 15%; /* Сдвиг вниз */
+  top: 45%; /* Сдвиг вниз */
 }
 
 .character-frame {
@@ -262,7 +262,7 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
   backdrop-filter: blur(5px); /* Эффект размытия */
-  z-index: 1001; /* На переднем плане, но ниже инвентаря */
+  z-index: 1000; /* На переднем плане, но ниже инвентаря */
   pointer-events: none; /* По умолчанию нельзя кликать */
 }
 
@@ -322,13 +322,99 @@
   pointer-events: none; /* Отключить взаимодействие */
 }
 
-.inventory-slot.dragging {
-  opacity: 0.5; /* Полупрозрачность для слота при перетаскивании */
+.inventory-slot.dragging img {
+  pointer-events: none; /* Исключаем взаимодействие с изображением при перетаскивании */
+  transform: scale(1.2); /* Увеличиваем предмет для визуального эффекта */
+  transition: transform 0.2s ease; /* Плавное увеличение */
 }
 
 .inventory-slot.over {
-  border: 2px dashed #fff; /* Указание на целевой слот для предмета */
+  border: 3px dashed #4caf50; /* Зеленый цвет для подсказки доступного слота */
+  background-color: rgba(76, 175, 80, 0.1); /* Легкий зеленый фон */
 }
 
+/* Отключение выделения текста для всех слотов инвентаря */
+.inventory-slot {
+  user-select: none; /* Отключает выделение текста */
+  -webkit-user-select: none; /* Отключение для Safari */
+  -ms-user-select: none; /* Отключение для старых версий IE */
+  cursor: grab; /* Указывает, что элемент можно перетаскивать */
+}
 
+.inventory-slot:active {
+  cursor: grabbing; /* Изменение курсора при перетаскивании */
+}
 
+/* Стили для кнопок управления */
+#inventory-controls {
+  position: absolute; /* Установка относительного расположения */
+  bottom: 60px; /* Отступ от нижнего края */
+  left: 50%; /* Центрирование по горизонтали */
+  transform: translateX(-50%); /* Корректное центрирование */
+  display: flex;
+  gap: 10px; /* Расстояние между кнопками */
+  z-index: 1100; /* Обеспечение верхнего слоя */
+}
+
+#inventory-controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Тень */
+  transition: background-color 0.3s ease;
+}
+
+#inventory-controls button:hover {
+  background-color: #45a049;
+}
+
+/* Стили для модального окна */
+#confirmation-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  padding: 20px;
+  background-color: red;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  z-index: 1150;
+  display: none;
+}
+
+#confirmation-modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.modal-content button {
+  margin: 10px;
+  padding: 5px 15px;
+  font-size: 14px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+  background-color: #45a049;
+}
+
+.selected {
+    border: 2px solid red;
+}
+
+.hidden {
+    display: none;
+}
