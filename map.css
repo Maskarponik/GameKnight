@@ -81,7 +81,7 @@ html, body {
 .map-buttons-container button {
   font-size: 35px; /* Размер текста */
   font-weight: bold; /* Жирность текста */
-  color: #ffffff; /* Белый текст */
+  color: #d2b48c; /* Белый текст */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень текста */
   text-transform: capitalize; /* Преобразует первую букву в заглавную */
   text-align: center; /* Выравнивание текста */
