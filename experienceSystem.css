@@ -1,0 +1,8 @@
+#player-exp {
+    position: absolute;
+    bottom: 120px;
+    right: 530px;
+    z-index: 1110; 
+    font-weight: bold; /* Жирный текст */	
+	font-size: 25px; /* Размер шрифта */
+}

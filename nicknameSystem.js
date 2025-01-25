@@ -28,7 +28,16 @@ const NicknameSystem = (() => {
         const playersData = loadPlayersData();
         return Object.prototype.hasOwnProperty.call(playersData, nickname);
     };
-
+    
+	const validatePlayerData = (playerData) => {
+        if (!playerData.health) playerData.health = 100;
+        if (!playerData.maxHealth) playerData.maxHealth = 100;
+        if (!playerData.level) playerData.level = 1;
+		if (!playerData.experience) playerData.experience = 0; // Проверка поля опыта
+        if (!playerData.inventory) playerData.inventory = [];
+        return playerData;
+    };
+	
     // Создание или загрузка игрока
     const createOrLoadPlayer = (nickname) => {
         const playersData = loadPlayersData();
@@ -36,7 +45,10 @@ const NicknameSystem = (() => {
             playersData[nickname] = {
                 score: 0,
                 level: 1,
-                inventory: [], // Инициализация пустого инвентаря
+				experience: 0,  // Новое поле опыта
+                inventory: [],
+                health: 100, // Начальное здоровье
+                maxHealth: 100, // Максимальное здоровье
             };
             savePlayersData(playersData);
         }
@@ -46,7 +58,10 @@ const NicknameSystem = (() => {
     // Получение данных игрока
     const getPlayerData = (nickname) => {
         const playersData = loadPlayersData();
-        return playersData[nickname] || null;
+        if (playersData[nickname]) {
+            return validatePlayerData(playersData[nickname]);
+        }
+        return null;
     };
 
     // Обновление данных игрока
@@ -78,17 +93,11 @@ const NicknameSystem = (() => {
         console.warn(`Игрок с никнеймом "${nickname}" не найден для обновления инвентаря.`);
         return false;
     };
-
-    return {
-        doesNicknameExist,
-        createOrLoadPlayer,
-        getPlayerData,
-        updatePlayerData,
-        getInventory,
-        updateInventory,
+	
+    const updatePlayerHealth = (nickname, health) => {
+        return updatePlayerData(nickname, { health });
     };
-})();
-
+	
 // Интерфейс для работы с никнеймом на странице
 const initNicknameUI = () => {
     const container = document.getElementById("nickname-container");
@@ -108,13 +117,67 @@ const initNicknameUI = () => {
     }
 };
 
+// Запуск интерфейса никнейма при загрузке
+document.addEventListener("DOMContentLoaded", initNicknameUI);
+
+// Получение опыта игрока
+const getExperience = (nickname) => {
+    const playerData = getPlayerData(nickname);
+    return playerData ? playerData.experience : 0;
+};
+
+// Обновление опыта игрока
+const updateExperience = (nickname, expAmount) => {
+    const playerData = getPlayerData(nickname);
+    if (playerData) {
+        playerData.experience += expAmount;
+        updatePlayerData(nickname, { experience: playerData.experience });
+		
+		// Проверка повышения уровня
+        checkLevelUp(nickname);
+				
+        return true;
+    }
+    return false;
+};
+
+const EXP_PER_LEVEL = 1000; // Количество опыта для нового уровня
+
+const checkLevelUp = (nickname) => {
+    const playerData = getPlayerData(nickname);
+    if (playerData) {
+        while (playerData.experience >= playerData.level * EXP_PER_LEVEL) {
+            playerData.experience -= playerData.level * EXP_PER_LEVEL;
+            playerData.level += 1;
+
+            // Улучшение характеристик при повышении уровня
+            playerData.maxHealth += 20;
+            playerData.attackPower += 5;
+            playerData.health = playerData.maxHealth; // Полное восстановление здоровья
+
+            // Показ уведомления о повышении уровня
+            const lvlUpAlert = document.getElementById("custom-alert-lvlup");
+            if (lvlUpAlert) {
+                lvlUpAlert.style.display = "block";
+                setTimeout(() => {
+                    lvlUpAlert.style.display = "none";
+                }, 2000);
+            }
+        }
+        NicknameSystem.updatePlayerData(nickname, playerData);
+    }
+};
+
+
 // Рендер формы ввода никнейма
 const renderNicknameForm = (container) => {
     container.innerHTML = `
-        <form id="nickname-form" style="display: flex; gap: 5px; align-items: center;">
-            <input type="text" id="nickname-input" placeholder="Введите никнейм" maxlength="20" style="flex: 1;">
-            <button type="submit">Сохранить</button>
-        </form>
+        <form id="nickname-form" class="nickname-form">
+            <div class="form-content">
+                <input type="text" id="nickname-input" class="nickname-input" placeholder="Введите никнейм" maxlength="20">
+                <button type="submit" class="nickname-button"></button>
+            </div>
+            <img src="./assets/nickname.png" alt="Nickname Icon" class="nickname-background">			
     `;
 
     const form = document.getElementById("nickname-form");
@@ -136,9 +199,11 @@ const renderNicknameForm = (container) => {
 // Рендер никнейма
 const renderNickname = (container, nickname) => {
     container.innerHTML = `
-        <div style="display: flex; gap: 10px; align-items: center;">
-            <span><strong>${nickname}</strong></span>
-            <button id="change-nickname">Сменить</button>
+        <div id="nickname-display" class="nickname-display">
+            <div class="nickname-background">
+                <span class="nickname-text"><strong>${nickname}</strong></span>
+                <button id="change-nickname" class="nickname-change-button"></button>
+            </div>
         </div>
     `;
 
@@ -162,19 +227,31 @@ const loadPlayerState = (nickname) => {
 // Обновление игрового состояния (примерная реализация)
 const updateGameState = (playerData) => {
     const levelElement = document.getElementById("player-level");
-    const scoreElement = document.getElementById("player-score");
+    const expElement = document.getElementById("player-exp");
 
     if (levelElement) {
         levelElement.textContent = `Уровень: ${playerData.level}`;
     }
 
-    if (scoreElement) {
-        scoreElement.textContent = `Очки: ${playerData.score}`;
+    if (expElement) {
+        expElement.textContent = `Опыт: ${playerData.experience} / ${playerData.level * EXP_PER_LEVEL}`;
     }
 };
 
-// Запуск интерфейса никнейма при загрузке
-document.addEventListener("DOMContentLoaded", initNicknameUI);
+// Возвращаем доступные методы
+    return {
+        doesNicknameExist,
+        createOrLoadPlayer,
+        getPlayerData,
+        updatePlayerData,
+        getInventory,
+        updateInventory,
+        updatePlayerHealth,
+        getExperience,        
+        updateExperience,     
+        checkLevelUp          
+    };
+})();
 
 // Экспорт модуля для тестов или дальнейшей разработки
 export default NicknameSystem;

@@ -1,6 +1,7 @@
 // inventory.js
 
 import NicknameSystem from "./nicknameSystem.js";
+import Items from "./items.js";
 
 // Получение текущего никнейма
 let currentNickname = localStorage.getItem("currentNickname");
@@ -20,6 +21,18 @@ function loadInventoryForNickname(nickname) {
 
 // Инициализация инвентаря для текущего никнейма
 export let inventory = loadInventoryForNickname(currentNickname);
+
+// Инициализация пустых слотов в инвентаре
+export function initializeInventorySlots(slotCount = 60) {
+  while (inventory.length < slotCount) {
+    inventory.push({ id: null, name: null, count: 0 }); // Пустой слот без фиктивного ID
+  }
+  // Убираем лишние слоты, если их больше, чем нужно
+  if (inventory.length > slotCount) {
+    inventory = inventory.slice(0, slotCount);
+  }
+  saveInventoryToNicknameSystem();
+}
 
 // Обновление текущего никнейма и перезагрузка инвентаря
 export function updateCurrentNickname(newNickname) {
@@ -50,72 +63,132 @@ export function saveInventoryToNicknameSystem() {
 
 // Добавление предметов в инвентарь
 export function addToInventory(items) {
+  const playerInventory = NicknameSystem.getInventory(currentNickname);
+  if (!playerInventory) return;
+
   items.forEach((item) => {
-    const existingSlot = inventory.find((slot) => slot.name === item.name);
-    if (existingSlot) {
-      existingSlot.count += item.count;
+    // Проверяем, существует ли предмет в items.js
+    const itemData = Items.getItemById(item.id);
+    if (!itemData) {
+      console.error(`Предмет с ID ${item.id} не найден в items.js`);
+      return;
+    }
+
+    // Проверяем, есть ли уже такой предмет в инвентаре
+    const existingItem = playerInventory.find(i => i.id === item.id);
+    if (existingItem) {
+      existingItem.count += item.count; // Увеличиваем количество
     } else {
-      const emptySlot = inventory.find((slot) => !slot.name);
-      if (emptySlot) {
-        emptySlot.name = item.name;
-        emptySlot.count = item.count;
-      } else {
-        console.warn("Инвентарь заполнен!");
+      // Ищем первый пустой слот
+      const emptySlotIndex = playerInventory.findIndex(i => !i || !i.id);
+      if (emptySlotIndex === -1) {
+        console.warn("Инвентарь заполнен! Предмет не может быть добавлен.");
+        return;
       }
+
+      // Добавляем новый предмет в пустой слот
+      playerInventory[emptySlotIndex] = {
+        id: item.id,
+        name: itemData.name, // Название из items.js
+        count: item.count,
+      };
     }
   });
-  saveInventoryToNicknameSystem();
+
+  NicknameSystem.updateInventory(currentNickname, playerInventory); // Сохраняем инвентарь
+  console.log("Инвентарь обновлён:", playerInventory);
 }
 
+
 let isSellingMode = false;
+
+document.addEventListener("dragover", (e) => {
+  e.preventDefault();  // Отменяем стандартное поведение
+});
 
 // Обработчики событий drag-and-drop
 export function setupDragAndDrop(containerElement) {
   containerElement.addEventListener("dragstart", (event) => {
-	if (isSellingMode) return; // Блокируем перетаскивание  
+    if (isSellingMode) return; // Блокируем перетаскивание в режиме продажи
+
     const slotElement = event.target.closest(".inventory-slot");
     if (!slotElement) return;
 
-    draggedItemIndex = Number(slotElement.getAttribute("data-slot-id")) - 1;
-    event.dataTransfer.setData("text/plain", draggedItemIndex);
+    const draggedItemId = slotElement.getAttribute("data-item-id");
+    if (!draggedItemId || draggedItemId === "null") {
+      console.warn("Попытка перетащить пустой слот.");
+      event.preventDefault(); // Запрещаем перетаскивание пустого слота
+      return;
+    }
+    
+    event.dataTransfer.setData("text/plain", draggedItemId);
     event.dataTransfer.effectAllowed = "move";
+
+    console.log(`Начато перетаскивание предмета с ID: ${draggedItemId}`);
   });
 
+
   containerElement.addEventListener("dragover", (event) => {
-	if (isSellingMode) return; // Блокируем перемещение  
-    event.preventDefault(); // Разрешить сброс
+    if (isSellingMode) return; // Блокируем перемещение в режиме продажи
+
+    event.preventDefault(); // Разрешаем сброс
     event.dataTransfer.dropEffect = "move";
   });
 
   containerElement.addEventListener("drop", (event) => {
-	if (isSellingMode) return; // Блокируем сброс  
+    if (isSellingMode) return; // Блокируем сброс в режиме продажи
+
     event.preventDefault();
 
     const targetSlotElement = event.target.closest(".inventory-slot");
-    if (!targetSlotElement || draggedItemIndex === null) return;
-
-    const targetSlotIndex = Number(targetSlotElement.getAttribute("data-slot-id")) - 1;
-
-    if (draggedItemIndex !== targetSlotIndex) {
-      // Обмен местами предметов
-      const temp = inventory[draggedItemIndex];
-      inventory[draggedItemIndex] = inventory[targetSlotIndex];
-      inventory[targetSlotIndex] = temp;
-
-      // Сохранить изменения и обновить интерфейс
-      saveInventoryToNicknameSystem();
-      updateInventoryUI(containerElement);
+    if (!targetSlotElement) {
+      console.warn("Целевой слот не найден.");
+      return;
     }
 
-    draggedItemIndex = null;
+    const draggedItemId = event.dataTransfer.getData("text/plain");
+    const targetSlotIndex = Number(targetSlotElement.getAttribute("data-slot-id")) - 1;
+ 
+    const draggedItem = inventory.find(item => item.id === Number(draggedItemId));
+    if (!draggedItem) {
+      console.error("Перетаскиваемый предмет не найден.");
+      return;
+    }
+
+    if (targetSlotIndex < 0 || targetSlotIndex >= inventory.length) {
+      console.warn("Попытка переместить предмет в несуществующий слот.");
+      return;
+    }
+
+    // Если слот пустой
+    if (!inventory[targetSlotIndex].id) {
+      const draggedItemIndex = inventory.indexOf(draggedItem);
+
+      inventory[draggedItemIndex] = { id: null, name: null, count: 0 }; // Очищаем старый слот
+      inventory[targetSlotIndex] = { ...draggedItem }; // Перемещаем предмет
+
+      console.log(`Предмет с ID ${draggedItem.id} перемещен в пустой слот ${targetSlotIndex + 1}.`);
+    } else {
+      // Обмен местами
+      const targetItem = inventory[targetSlotIndex];
+      const draggedItemIndex = inventory.indexOf(draggedItem);
+
+      [inventory[draggedItemIndex], inventory[targetSlotIndex]] =
+        [inventory[targetSlotIndex], inventory[draggedItemIndex]];
+
+      console.log(`Предметы с ID ${draggedItem.id} и ${targetItem.id} поменялись местами.`);
+    }
+
+    saveInventoryToNicknameSystem();
+    updateInventoryUI(containerElement);
   });
 }
 
+
 // Таблица цен предметов
-const itemPrices = {
-    "scraps cloth": 20, // Имя предмета -> Цена
-	"bones": 50, // Имя предмета -> Цена
-    // Добавьте больше предметов и их цен
+const itemPrices = (id) => {
+  const item = Items.getItemById(id);
+  return item ? item.price || item.sellPrice || 0 : 0;
 };
 	
 // Продажа предметов в инвентаре 
@@ -170,19 +243,54 @@ function initializeInventory() {
     });
 }
 
+function useItem(slot, index) {
+  const item = Items.getItemById(slot.id);
+  if (!item || item.type !== "consumable") return;
+
+  const playerData = NicknameSystem.getPlayerData(currentNickname);
+
+  // Применяем эффект предмета
+  if (item.effect.health) {
+    playerData.health = Math.min(playerData.health + item.effect.health, playerData.maxHealth);    
+  }
+  if (item.effect.energy) {
+    playerData.energy = Math.min(playerData.energy + item.effect.energy, playerData.maxEnergy);  
+  }
+
+  // Уменьшаем количество предмета или удаляем
+  if (slot.count > 1) {
+    inventory[index].count--;
+  } else {
+    inventory.splice(index, 1); // Удаляем предмет из инвентаря
+  }
+
+  // Сохраняем обновлённые данные
+  NicknameSystem.updatePlayerData(currentNickname, playerData);
+  NicknameSystem.updateInventory(currentNickname, inventory);
+  updateInventoryUI(document.getElementById("inventory-slots")); 
+  window.updateUI();  
+  updateUI(); 
+  console.log(`Текущее здоровье: ${playerData.health}/${playerData.maxHealth}`);  
+}
+
+
 // Обновление интерфейса инвентаря
 export function updateInventoryUI(containerElement) {
-  containerElement.innerHTML = ""; // Очищаем все слоты
+  containerElement.innerHTML = ""; // Очищаем контейнер
+  
   inventory.forEach((slot, index) => {
+    const item = Items.getItemById(slot.id);
+
     const slotElement = document.createElement("div");
     slotElement.classList.add("inventory-slot");
-    slotElement.setAttribute("data-slot-id", index + 1);
-    slotElement.setAttribute("draggable", "true"); // Разрешить перетаскивание
+    slotElement.setAttribute("data-slot-id", index + 1); // Уникальный ID для слота
+    slotElement.setAttribute("data-item-id", slot.id || "");
+    slotElement.setAttribute("draggable", slot.id ? "true" : "false");
 
-    if (slot.name) {
+    if (item) {
       const img = document.createElement("img");
-      img.src = `./assets/${slot.name.replace(/\s/g, "_")}.png`;
-      img.alt = slot.name;
+      img.src = item.image || "";
+      img.alt = item.name || "Unknown Item";
       img.style.width = "80%";
       img.style.height = "80%";
       slotElement.appendChild(img);
@@ -197,22 +305,24 @@ export function updateInventoryUI(containerElement) {
       count.style.padding = "2px 5px";
       count.style.borderRadius = "3px";
       slotElement.appendChild(count);
-    }	
-    	
+    
+      // Если предмет расходуемый, добавляем кнопку "Использовать"
+      if (item.type === "consumable") {
+        const useButton = document.createElement("button");
+        useButton.textContent = "Использовать";
+        useButton.classList.add("use-button");
+
+        useButton.onclick = () => useItem(slot, index);
+        slotElement.appendChild(useButton);
+      }
+    }
+
     containerElement.appendChild(slotElement);
   });
 
-  // Подключаем drag-and-drop функционал
-  setupDragAndDrop(containerElement);
+  setupDragAndDrop(containerElement); // Подключаем события
 }
 
-// Инициализация пустых слотов в инвентаре
-export function initializeInventorySlots(slotCount = 98) {
-  while (inventory.length < slotCount) {
-    inventory.push({ id: inventory.length + 1, name: null, count: 0 });
-  }
-  saveInventoryToNicknameSystem();
-}
 
 // Подсчёт монет в никнейм системе
 function addCoinsToNickname(nickname, coins) {
@@ -224,26 +334,30 @@ function addCoinsToNickname(nickname, coins) {
 }
 
 // Продажа всех предметов
-function sellAllItems() {
-    // Подсчёт общей стоимости всех предметов в инвентаре
-    const totalCoins = inventory.reduce((sum, slot) => {
-        const itemPrice = itemPrices[slot.name] || 0; // Получаем цену предмета
-        return sum + (slot.count || 0) * itemPrice; // Умножаем количество на цену
-    }, 0);
+export function sellAllItems() {
+  let totalCoins = 0;
 
-    // Проверяем, есть ли предметы для продажи
-    if (totalCoins > 0) {
-        inventory.forEach(slot => {
-            slot.name = null; // Убираем название предмета
-            slot.count = 0; // Обнуляем количество предметов
-        });
-        addCoinsToNickname(currentNickname, totalCoins); // Добавляем монеты игроку
-        saveInventoryToNicknameSystem(); // Сохраняем инвентарь
-        updateInventoryUI(document.getElementById("inventory-slots")); // Обновляем интерфейс
-        alert(`Вы продали все предметы за ${totalCoins} монет!`);
-    } else {
-        alert("Ваш инвентарь пуст!"); // Если предметов нет
+  inventory.forEach((slot) => {
+    const item = Items.getItemById(slot.id);
+    if (item && item.sellPrice) {
+      totalCoins += item.sellPrice * slot.count; // Увеличиваем общую стоимость
     }
+    slot.count = 0; // Обнуляем количество предметов
+  });
+
+  inventory = inventory.filter((slot) => slot.count > 0); // Убираем пустые слоты
+  addCoinsToNickname(currentNickname, totalCoins); // Добавляем монеты игроку
+  saveInventoryToNicknameSystem(); // Сохраняем инвентарь
+  updateInventoryUI(document.getElementById("inventory-slots")); // Обновляем интерфейс
+  // Обновляем текст в <span id="coins">
+  const coinsElement = document.getElementById("coins");
+  const playerData = NicknameSystem.getPlayerData(currentNickname);
+  if (coinsElement && playerData) {
+    coinsElement.textContent = playerData.coins || 0; // Устанавливаем актуальное количество монет
+  } else {
+    console.error("Не удалось обновить отображение монет. Проверьте элемент #coins или данные игрока.");
+  }
+  alert(`Вы продали все предметы за ${totalCoins} монет!`);
 }
 
 let selectedSlots = new Set();
@@ -304,32 +418,44 @@ function openConfirmationModal(sellCallback, message) {
 }
 
 // Продажа выбранных предметов
-function sellSelectedItems() {
-  console.log("Функция sellSelectedItems вызвана");
-  const selectedItems = Array.from(selectedSlots).map(index => inventory[index - 1]);
-  console.log("Выбранные предметы:", selectedItems);
-  
-  const totalCoins = selectedItems.reduce((sum, slot) => {
-    const itemPrice = itemPrices[slot.name] || 0; // Цена предмета из таблицы
-    return sum + (slot.count || 0) * itemPrice; // Учитываем количество и цену
-  }, 0);
+export function sellSelectedItems() {
+  const selectedItems = Array.from(selectedSlots).map((index) => inventory[index - 1]);
+  let totalCoins = 0;
 
-  if (selectedItems.length === 0) {
-    alert("Вы не выбрали ни одного предмета!");
-    return;
-  }
-
-  selectedItems.forEach(slot => {
-    slot.name = null;
-    slot.count = 0;
+  selectedItems.forEach((slot) => {
+    const item = Items.getItemById(slot.id);
+    if (item && item.sellPrice) {
+      totalCoins += item.sellPrice * slot.count; // Увеличиваем общую стоимость
+      slot.count = 0; // Продаем предметы
+    }
   });
 
+  inventory = inventory.filter((slot) => slot.count > 0); // Убираем пустые слоты
   addCoinsToNickname(currentNickname, totalCoins);
   saveInventoryToNicknameSystem();
-  console.log(`Монеты добавлены: ${totalCoins}`);
-  alert(`Вы продали выбранные предметы за ${totalCoins} монет!`);
-
   updateInventoryUI(document.getElementById("inventory-slots"));
+  // Обновляем текст в <span id="coins">
+  const coinsElement = document.getElementById("coins");
+  const playerData = NicknameSystem.getPlayerData(currentNickname);
+  if (coinsElement && playerData) {
+    coinsElement.textContent = playerData.coins || 0; // Устанавливаем актуальное количество монет
+  } else {
+    console.error("Не удалось обновить отображение монет. Проверьте элемент #coins или данные игрока.");
+  }
+  
+  alert(`Вы продали выбранные предметы за ${totalCoins} монет!`);
+}
+
+// Обновление монет
+function updateCoinsDisplay() {
+  const coinsElement = document.getElementById("coins-display"); // Ищем элемент с монетами
+  const playerData = NicknameSystem.getPlayerData(currentNickname); // Получаем данные игрока
+
+  if (coinsElement && playerData) {
+    coinsElement.textContent = playerData.coins || 0; // Устанавливаем текущее количество монет
+  } else {
+    console.error("Не удалось обновить отображение монет. Проверьте HTML и данные игрока.");
+  }
 }
 
 // Обработчики кнопок продажи

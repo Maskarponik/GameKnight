@@ -38,25 +38,35 @@
   box-sizing: border-box; /* Учитываем отступы и границы */
 }
 
-.health-bar, .energy-bar {
-  position: relative;
+.energy-bar {
+  position: absolute;
   width: 350px;  /* Ширина полоски */
   height: 70px;  /* Высота полоски */
-  margin-top: 1px;  /* Отступ от других элементов */
-  right: -40%; /* Сдвиг влево */
-  top: 15%; /* Сдвиг вниз */
+  margin-top: 10px;  /* Отступ от других элементов */
+  right: 5%; /* Сдвиг влево */
+  top: 50%; /* Сдвиг вниз */
+}
+
+.health-bar {
+  position: absolute;
+  width: 350px;  /* Ширина полоски */
+  height: 70px;  /* Высота полоски */
+  margin-top: 10px;  /* Отступ от других элементов */
+  right: 5%; /* Сдвиг влево */
+  top: 32%; /* Сдвиг вниз */
 }
 
 .character-frame {
   position: absolute; /* Позиционирование относительно .top-bar */
-  top: 10; /* Прижимаем к верхнему краю родителя */
-  left: 0; /* Прижимаем к левому краю родителя */
+  top: 45px; /* Прижимаем к верхнему краю родителя */
+  left: -10px; /* Прижимаем к левому краю родителя */
   width: 150px; /* Задаём ширину рамки */
   height: 150px; /* Задаём высоту рамки */
   background: url('./assets/frame_character.png') no-repeat center center; /* Фон */
   background-size: contain; /* Масштабируем фон по рамке */
   z-index: 10; /* Обеспечиваем видимость поверх других элементов */
 }
+
 
 .timer {
   position: absolute;
@@ -77,6 +87,52 @@
   justify-content: center;
 }
 
+#player-attack-log {
+    position: absolute;
+    bottom: 400px;
+    right: 230px;
+	color: white;
+    z-index: 1110;
+    display: flex;
+    flex-direction: column; /* Обычный порядок */
+    align-items: flex-start; /* Выравнивание сообщений слева */
+    gap: 20px; /* Расстояние между сообщениями */
+    flex-wrap: nowrap; /* Сообщения отображаются только в одну строку */       	
+}
+
+.damage-log {
+    padding: 5px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    opacity: 0; /* Изначально скрываем */    
+    animation: slideDownFadeIn 0.3s ease-out forwards, slideDownFadeOut 0.1s ease-in 0.5s forwards;
+    white-space: nowrap; /* Запрет на перенос текста */
+}
+
+/* Анимация появления сверху вниз */
+@keyframes slideDownFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация исчезновения вниз */
+@keyframes slideDownFadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+}
 
 .bottom-panel {
   position: absolute;

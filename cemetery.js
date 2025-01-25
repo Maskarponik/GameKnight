@@ -1,5 +1,16 @@
 // nicknameSystem.js
 
+// import { initializeMobAttackSystem } from "./mobAttackSystem.js";
+
+import { getExperienceInfo, gainExpFromMob } from './experienceSystem.js';
+
+import itemModule from './items.js';
+
+// Деструктурируем необходимые элементы из itemModule
+const { getItemById, getItemsByType, getItemPrice, items } = itemModule;
+
+//import MobAttackSystem from './mobAttackSystem.js';
+
 // Объект для работы с системой никнеймов
 const NicknameSystem = (() => {
     const STORAGE_KEY = "playersData";
@@ -163,13 +174,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // Функция расчета выпадения лута
     function calculateLoot() {
         const lootChance = Math.random();
-        if (lootChance < 0.7) { // Шанс выпадения 70%
-            const lootItem = { name: "bones", count: 1 };
-            addToInventory([lootItem]); // Используйте эту функцию для корректного обновления
-            console.log("Выпал лут:", lootItem); // Отладочная информация
-            return lootItem;
+        if (lootChance < 0.5) { // Шанс выпадения 50%
+            const lootItemId = 102; // ID выпадающего предмета (Кости)
+            const lootItem = { id: lootItemId, count: 1 }; // Указываем ID и количество
+        
+            const itemDetails = getItemById(lootItemId); // Получаем данные о предмете
+            if (itemDetails) {
+                addToInventory([lootItem]); // Передаём в инвентарь
+                console.log(`Выпал лут: ${itemDetails.name} (x${lootItem.count})`);
+                return lootItem;
+            } else {
+                console.error("Ошибка: Предмет с таким ID не найден.");
+            }
         }
-        console.log("Лут не выпал"); // Отладочная информация
+        console.log("Лут не выпал."); // Отладочная информация
         return null;
     }
 
@@ -202,10 +220,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Лут
         if (lootItem && lootItem.count) {
-            const lootText = document.createElement("div");
-            lootText.style.marginTop = "20px";
-            lootText.textContent = `Выпала: ${lootItem.count} кость.`;
-            message.appendChild(lootText);
+            const itemDetails = getItemById(lootItem.id); // Получаем имя предмета
+            if (itemDetails) {
+                const lootText = document.createElement("div");
+                lootText.style.marginTop = "20px";
+                lootText.textContent = `Выпал: ${itemDetails.name} (x${lootItem.count}).`;
+                message.appendChild(lootText);
+            }
         }
 
         document.body.appendChild(message);
@@ -223,10 +244,32 @@ document.addEventListener("DOMContentLoaded", () => {
         if (SkeletonHealth > 0) {            
 			SkeletonHealth -= attackPower;
             updateSkeletonUI();
+			
+			// Лог атаки персонажа
+            const playerAttackLog = document.getElementById("player-attack-log");
+			
+			// Создаём отдельный элемент для урона
+            const damageText = document.createElement("div");
+            damageText.textContent = `Вы нанесли ${attackPower} урона!`;
+            damageText.classList.add("damage-log");
 
+            // Добавляем новый элемент в контейнер лога
+            playerAttackLog.appendChild(damageText);
+			
+			// Удаляем сообщение через 2 секунды
+            setTimeout(() => {
+                if (damageText.parentElement) {
+                    damageText.remove();
+                }
+            }, 600);
+			
             if (SkeletonHealth <= 0) {
                 SkeletonHealth = 0;
                 updateSkeletonUI();
+				
+				// Начисление опыта за победу над гоблином
+                gainExpFromMob(currentNickname, "skeleton");
+				
                 const reward = calculateReward();
                 const lootItem = calculateLoot();
                 console.log("Передано в showVictoryMessage:", { reward, lootItem }); // Отладка
@@ -244,4 +287,25 @@ document.addEventListener("DOMContentLoaded", () => {
     function navigateToGame() {
         window.location.href = "game.html";
     }
+	
+	    // Настройка моба
+    const mobConfig = {
+        id: "skeleton", // ID моба, соответствующий HTML-элементуs
+        maxLevel: 40, // Максимальный уровень моба
+        baseDamage: 10, // Базовый урон
+        attackInterval: 2000, // Интервал атаки в мс
+        healthMultiplier: 100, // Множитель здоровья
+    };
+
+    // Отображаем моба на экране
+    const mobElement = document.getElementById(mobConfig.id);
+    if (mobElement) {
+        mobElement.style.display = "block";
+    } else {
+        console.error("Элемент моба не найден!");
+        return;
+    }
+
+    // Запуск системы урона
+    initializeMobAttackSystem(mobConfig); // Передаём параметры моба
 });

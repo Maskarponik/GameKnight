@@ -30,19 +30,28 @@
   box-sizing: border-box; /* Учитываем отступы и границы */
 }
 
-.health-bar, .energy-bar {
-  position: relative;
+.energy-bar {
+  position: absolute;
   width: 350px;  /* Ширина полоски */
   height: 70px;  /* Высота полоски */
-  margin-top: 1px;  /* Отступ от других элементов */
-  right: -40%; /* Сдвиг влево */
-  top: 45%; /* Сдвиг вниз */
+  margin-top: 10px;  /* Отступ от других элементов */
+  right: 5%; /* Сдвиг влево */
+  top: 50%; /* Сдвиг вниз */
+}
+
+.health-bar {
+  position: absolute;
+  width: 350px;  /* Ширина полоски */
+  height: 70px;  /* Высота полоски */
+  margin-top: 10px;  /* Отступ от других элементов */
+  right: 5%; /* Сдвиг влево */
+  top: 32%; /* Сдвиг вниз */
 }
 
 .character-frame {
   position: absolute; /* Позиционирование относительно .top-bar */
-  top: 10; /* Прижимаем к верхнему краю родителя */
-  left: 0; /* Прижимаем к левому краю родителя */
+  top: 45px; /* Прижимаем к верхнему краю родителя */
+  left: -10px; /* Прижимаем к левому краю родителя */
   width: 150px; /* Задаём ширину рамки */
   height: 150px; /* Задаём высоту рамки */
   background: url('./assets/frame_character.png') no-repeat center center; /* Фон */
@@ -62,7 +71,7 @@
   font-weight: bold; /* Жирный шрифт */
   color: white; /* Белый цвет текста */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
-  z-index: 1000; /* Убедимся, что текст урона будет поверх других элементов */
+  z-index: 990; /* Убедимся, что текст урона будет поверх других элементов */
 }
 
 /* Уведомление о тренировке */
@@ -272,22 +281,25 @@
 #inventory-modal {
   display: none;  /* Скрыто по умолчанию */
   position: fixed;
-  top: 45%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1300px; 
-  height: 830px;  
-  background-image: url('./assets/inventory_window.png');  /* Фон окна инвентаря */
-  background-size: cover;    
-  z-index: 1002;  /* На переднем плане */  
+  width: 1300px;
+  height: 830px;     
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url('./assets/inventory_window.png?v=2');
+  background-size: cover;
+  z-index: 1002;  
+  box-sizing: border-box; /* Учитываем padding внутри размеров */ 
 }
 
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(14, 1fr); /* Сетка 14 слотов в ряд */
-  gap: -10px; /* Расстояние между слотами */
-  left: 150px; /* Сдвиг вправо */
-  top: 120px;  /* Сдвиг вниз */
+  grid-template-columns: repeat(10, 80px); /* 10 слотов в ряд фиксированного размера */
+  grid-template-rows: repeat(6, 70px); /* Позволяет адаптироваться по вертикали */  
+  justify-content: center; /* Центрируем по горизонтали */
 }
 
 /* Затемнение фона */
@@ -299,7 +311,7 @@
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
-  backdrop-filter: blur(5px); /* Эффект размытия */
+  backdrop-filter: blur(1px); /* Эффект размытия */
   z-index: 1000; /* На переднем плане, но ниже инвентаря */
   pointer-events: none; /* По умолчанию нельзя кликать */
 }
@@ -307,12 +319,12 @@
 /* Стиль для кнопки закрытия инвентаря */
 #close-inventory {
   position: absolute;
-  top: 30px;
-  right: 20px;
+  top: 100px;
+  right: 40px;
   background-image: url('./assets/close_button.png');  /* Картинка кнопки закрытия */
   background-size: cover;
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border: none;
   cursor: pointer;
   z-index: 1003;
@@ -324,17 +336,27 @@
   opacity: 0.8;
 }
 
-.inventory-slot {
-  width: 64px; /* Размер слота */
-  height: 64px; /* Размер слота */  
+.inventory-slot:active {
+  opacity: 0.5; /* Делаем слот полупрозрачным во время перетаскивания */
+}
+
+.inventory-slot {  
+  position: relative;
+  width: 64px;
+  height: 64px;
   display: flex;
-  align-items: center; /* Центрирование предмета по вертикали */
-  justify-content: center; /* Центрирование предмета по горизонтали */
-  margin: 5px; /* Отступы между слотами */
-  position: relative; /* Для вложенных элементов, таких как подсказки */
-  left: 25px; /* Сдвиг вправо */
-  top: 130px;  /* Сдвиг вниз */
-  margin: 9px -15px; /* Верхний/нижний 5px, левый/правый 15px */
+  top: 250px;
+  left: 400px;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid #A0522D; 
+}
+
+.dragging {
+  opacity: 0.7; /* Прозрачность перетаскиваемого элемента */
+  position: fixed; /* Фиксируем позицию, чтобы не двигался родительский элемент */
+  pointer-events: none;
+  z-index: 1003; /* Поверх всех элементов */
 }
 
 .inventory-slot img {
@@ -343,21 +365,22 @@
   pointer-events: none; /* Отключение взаимодействия с изображением */
 }
 
-.inventory-slot:hover::after {
-  content: attr(data-tooltip); /* Текст подсказки из атрибута data-tooltip */
+.use-button {
+  display: none;
   position: absolute;
-  bottom: 110%; /* Сместить подсказку над слотом */
+  bottom: 52px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #fff;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: none;
   padding: 5px 10px;
-  border-radius: 4px;
-  white-space: nowrap;
-  z-index: 100; /* На передний план */
-  font-size: 12px;
-  text-align: center;
-  pointer-events: none; /* Отключить взаимодействие */
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inventory-slot:hover .use-button {
+  display: block;
 }
 
 .inventory-slot.dragging img {

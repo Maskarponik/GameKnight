@@ -50,6 +50,27 @@
   transition: transform 0.2s;
 }
 
+/* Кнопка Древних руин */
+.ancienttemple-button {
+  position: absolute;
+  width: 480px; /* Ширина кнопки */
+  height: 600px; /* Высота кнопки */
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  background-image: url('./assets/ancienttemple_button.png');
+  bottom: 52%; /* Отступ от нижней части экрана */
+  right: -10px; /* Отступ от правой части экрана */
+  overflow: hidden; /* Скрываем все, что выходит за пределы контейнера */
+}
+
+.ancienttemple-button:hover {
+  transform: scale(1.01);
+  transition: transform 0.2s;
+}
+
 /* Кнопка замка */
 .castle-button {
   position: absolute;

@@ -127,15 +127,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // Инициализация базовых данных игрока
     let { coins, level, health, maxHealth, energy, maxEnergy, attackPower } = playerData;
 
-    // Инициализация данных гоблина
-    const goblinMaxLevel = 20; // Максимальный уровень гоблина
-    let goblinLevel = Math.min(level, goblinMaxLevel); // Ограничение уровня гоблина
-    const goblinBaseHealth = 100; // Базовое здоровье гоблина
-    let goblinMaxHealth = goblinBaseHealth * goblinLevel;
-    let goblinHealth = goblinMaxHealth;
+    // Инициализация данных Скелета
+    const GuardianwarriorMaxLevel = 60; // Максимальный уровень скелета
+    let GuardianwarriorLevel = Math.min(level, GuardianwarriorMaxLevel); // Ограничение уровня скелета
+    const GuardianwarriorBaseHealth = 300; // Базовое здоровье скелета
+    let GuardianwarriorMaxHealth = GuardianwarriorBaseHealth * GuardianwarriorLevel;
+    let GuardianwarriorHealth = GuardianwarriorMaxHealth;
 
     // Элементы интерфейса
-    const goblinHealthBar = document.getElementById("goblin-health-fill");
+    const GuardianwarriorHealthBar = document.getElementById("guardianwarrior-health-fill");
     const attackButton = document.getElementById("attack-button");
     const coinsElement = document.getElementById("coins");
     const levelElement = document.getElementById("level");
@@ -152,28 +152,30 @@ document.addEventListener("DOMContentLoaded", () => {
         energyBarFull.style.clipPath = `inset(0 0 0 ${100 - (energy / maxEnergy) * 100}%)`;
     }
 
-    // Функция обновления UI гоблина
-    function updateGoblinUI() {
-        goblinHealthBar.style.width = `${(goblinHealth / goblinMaxHealth) * 100}%`;
+    // Функция обновления UI Скелета
+    function updateGuardianwarriorUI() {
+	  const GuardianwarriorHealthBar = document.getElementById("guardianwarrior-health-fill");
+      if (!GuardianwarriorHealthBar) {
+        console.error("GuardianwarriorHealthBar is missing!");
+        return;
+      }
+      GuardianwarriorHealthBar.style.width = `${(GuardianwarriorHealth / GuardianwarriorMaxHealth) * 100}%`;
     }
 
     // Функция расчета награды за победу
     function calculateReward() {
-        if (goblinLevel === goblinMaxLevel) {
-            return Math.floor(Math.random() * (150 - 100 + 1)) + 100; // Награда за уровень 20: 100-150
-        }
-        let baseReward = 50;
-        let bonusPer10Levels = Math.floor(goblinLevel / 10) * 10;
-        let minReward = baseReward + bonusPer10Levels;
-        let maxReward = minReward + 50; // Диапазон награды
+        const baseReward = 150; // Начальная награда
+        const bonusPer10Levels = Math.floor(GuardianwarriorLevel / 10) * 30; // Бонус за каждые 10 уровней
+        const minReward = baseReward + bonusPer10Levels;
+        const maxReward = minReward + 100; // Диапазон награды
         return Math.floor(Math.random() * (maxReward - minReward + 1)) + minReward;
     }
 
     // Функция расчета выпадения лута
     function calculateLoot() {
         const lootChance = Math.random();
-        if (lootChance < 0.7) { // Шанс выпадения 70%
-            const lootItemId = 103; // ID выпадающего предмета (Глаз гоблина)
+        if (lootChance < 0.4) { // Шанс выпадения 40%
+            const lootItemId = 101; // ID выпадающего предмета (Глаз гоблина)
             const lootItem = { id: lootItemId, count: 1 }; // Указываем ID и количество
         
             const itemDetails = getItemById(lootItemId); // Получаем данные о предмете
@@ -188,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Лут не выпал."); // Отладочная информация
         return null;
     }
-
+	
     // Функция отображения сообщения о победе
     function showVictoryMessage(reward, lootItem = null) {
         const message = document.createElement("div");
@@ -198,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
         message.style.transform = "translate(-50%, -50%)";
         message.style.width = "500px";
         message.style.height = "500px";
-        message.style.background = "url('./assets/notification_plate_fight.png') no-repeat center center";
+        message.style.background = "url('./assets/notification_plate_guardianwarrior.png') no-repeat center center";
         message.style.backgroundSize = "cover";
         message.style.zIndex = "9999";
         message.style.display = "flex";
@@ -236,37 +238,37 @@ document.addEventListener("DOMContentLoaded", () => {
             navigateToGame();
         }, 2000);
     }
-	
+
     // Обработка атаки
     attackButton.addEventListener("click", () => {
-        if (goblinHealth > 0) {
-            goblinHealth -= attackPower;
-            updateGoblinUI();
-
-            // Лог атаки персонажа
+        if (GuardianwarriorHealth > 0) {            
+			GuardianwarriorHealth -= attackPower;
+            updateGuardianwarriorUI();
+			
+			// Лог атаки персонажа
             const playerAttackLog = document.getElementById("player-attack-log");
-
-            // Создаём отдельный элемент для урона
+			
+			// Создаём отдельный элемент для урона
             const damageText = document.createElement("div");
             damageText.textContent = `Вы нанесли ${attackPower} урона!`;
             damageText.classList.add("damage-log");
 
             // Добавляем новый элемент в контейнер лога
             playerAttackLog.appendChild(damageText);
-
-            // Удаляем сообщение через 2 секунды
+			
+			// Удаляем сообщение через 2 секунды
             setTimeout(() => {
                 if (damageText.parentElement) {
                     damageText.remove();
                 }
-            }, 300);
-
-            if (goblinHealth <= 0) {
-                goblinHealth = 0;
-                updateGoblinUI();
+            }, 600);
+			
+            if (GuardianwarriorHealth <= 0) {
+                GuardianwarriorHealth = 0;
+                updateGuardianwarriorUI();
 				
 				// Начисление опыта за победу над гоблином
-                gainExpFromMob(currentNickname, "goblin");
+                gainExpFromMob(currentNickname, "guardianwarrior");
 				
                 const reward = calculateReward();
                 const lootItem = calculateLoot();
@@ -276,24 +278,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-
     // Инициализация
-    goblinMaxHealth = goblinBaseHealth * goblinLevel;
-    goblinHealth = goblinMaxHealth;
+    GuardianwarriorMaxHealth = GuardianwarriorBaseHealth * GuardianwarriorLevel;
+    GuardianwarriorHealth = GuardianwarriorMaxHealth;
     updatePlayerUI();
-    updateGoblinUI();
+    updateGuardianwarriorUI();
 
     function navigateToGame() {
         window.location.href = "game.html";
     }
 	
-    // Настройка моба
+	    // Настройка моба
     const mobConfig = {
-        id: "goblin", // ID моба, соответствующий HTML-элементу
-        maxLevel: 20, // Максимальный уровень моба
-        baseDamage: 5, // Базовый урон
-        attackInterval: 2000, // Интервал атаки в мс
-        healthMultiplier: 100, // Множитель здоровья
+        id: "guardianwarrior", // ID моба, соответствующий HTML-элементуs
+        maxLevel: 60, // Максимальный уровень моба
+        baseDamage: 20, // Базовый урон
+        attackInterval: 1000, // Интервал атаки в мс
+        healthMultiplier: 140, // Множитель здоровья
     };
 
     // Отображаем моба на экране

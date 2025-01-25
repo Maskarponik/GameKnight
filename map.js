@@ -32,7 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Недостаточно энергии!");
         }
     });
-
+    
+	// Древние руины
+    const ancienttempleButton = document.querySelector('[data-location="ancienttemple"]');
+    ancienttempleButton.addEventListener("click", () => {
+        if (spendEnergy(currentNickname, 20)) {
+            window.location.href = "ancient_temple.html";
+        } else {
+            alert("Недостаточно энергии!");
+        }
+    });
+	
     // Кладбище
     const cemeteryButton = document.querySelector('[data-location="cemetery"]');
     cemeteryButton.addEventListener("click", () => {
@@ -41,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             alert("Недостаточно энергии!");
         }
-    });
+    });	
 
     // Замок (без изменений)
     const castleButton = document.querySelector('[data-location="castle"]');

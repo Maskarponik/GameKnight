@@ -7,38 +7,42 @@
   <link rel="stylesheet" href="./globals.css">
   <link rel="stylesheet" href="./gamestyle.css">
   <link rel="stylesheet" href="./nicknameStyles.css">
+  <link rel="stylesheet" href="./experienceSystem.css">
+  <link rel="stylesheet" href="market.css">
 </head>
 <body>
   <div id="game-container" style="position: absolute; width: 100%; height: 100%;">
 
     <!-- Верхняя панель -->
     <div class="top-bar">
-      <div class="character-frame" id="character-frame"></div>
+	
+    <div class="character-frame" id="character-frame"></div>
       
-      <!-- Контейнер для никнейма -->
-      <div id="nickname-container"></div>
+    <!-- Контейнер для никнейма -->
+    <div id="nickname-container"></div>
   
-      <div class="stats">
-        <div class="stat">
-          <div class="health-bar">
-            <span class="bar-text" id="health-text">100 / 100</span>
-            <img class="bar-full" id="health-bar" src="./assets/health_bar_full.png" alt="Health Full">
-          </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="health-bar">
+          <span class="bar-text" id="health-text">100 / 100</span>
+          <img class="bar-full" id="health-bar" src="./assets/health_bar_full.png" alt="Health Full">
         </div>
-        <div class="stat">
-          <div class="energy-bar">
-            <span class="bar-text" id="energy-text">100 / 100</span>
-            <img class="bar-full" id="energy-bar" src="./assets/energy_bar_full.png" alt="Energy Full">
-          </div>
+      </div>
+      <div class="stat">
+        <div class="energy-bar">
+          <span class="bar-text" id="energy-text">100 / 100</span>
+          <img class="bar-full" id="energy-bar" src="./assets/energy_bar_full.png" alt="Energy Full">
         </div>
       </div>
     </div>
-
+  </div>
+   
     <!-- Нижняя панель -->
     <div class="bottom-panel">
       <button class="button map" id="map-button"></button>
       <button class="button train" id="train-button"></button>
-      <button class="button eat" id="eat-button"></button>
+      <button class="button eat" id="eat-button"></button>	  
+	  <button class="open-market-button" id="open-market-button"></button>
 
       <!-- Элементы Level и Coin -->
       <div class="coin">
@@ -50,7 +54,9 @@
         <span id="level">1</span>
       </div>
     </div>
-
+	
+    <div id="player-exp">Опыт: 0 / 1000</div>
+	
     <!-- Кнопка инвентаря -->
     <button id="inventory-button"></button>
 
@@ -61,7 +67,7 @@
       <button id="close-inventory"></button>           
 
       <!-- Слоты инвентаря -->
-      <div id="inventory-slots" style="display: grid; grid-template-columns: repeat(14, 1fr);">
+      <div id="inventory-slots" style="display: grid; grid-template-columns: repeat(10, 80px); grid-template-rows: repeat(6, 80px);">
         <!-- Здесь будут отображаться предметы инвентаря -->
       </div>
 
@@ -77,9 +83,8 @@
 	    <p id="confirmation-text">Вы уверены, что хотите продать все предметы?</p>
         <button id="confirm-yes-button">Да</button>
         <button id="confirm-no-button">Нет</button>         
-	</div>
+	</div>	
 	
-	<div class="inventory-slot">
   </div>
     
     <!-- Блок для отображения урона -->
@@ -94,8 +99,11 @@
 
   </div>
 
-  <script type="module" src="./nicknameSystem.js"></script>
+  <script type="module" src="./nicknameSystem.js"></script>  
+  <script type="module" src="./items.js"></script>  
   <script type="module" src="./inventory.js"></script>
+  <script type="module" src="./experienceSystem.js"></script>
+  <script type="module" src="./market.js"></script>
   <script type="module" src="./gamescript.js"></script>  
   <script src="./responsive.js"></script>
 </body>

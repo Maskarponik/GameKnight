@@ -1,0 +1,115 @@
+/* market.css - Стили для магазина */
+
+#market-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #f8f8f8;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  z-index: 1000;
+}
+
+#market-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+#item-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.item-row:last-child {
+  border-bottom: none;
+}
+
+.item-name {
+  font-size: 16px;
+  color: #555;
+}
+
+.add-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+#total-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
+}
+
+#buy-button {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#buy-button:hover {
+  background-color: #0056b3;
+}
+
+.open-market-button {
+  background-image: url('./assets/market_button.png');
+  background-color: transparent; /* Прозрачный фон */
+  left: 800px; /* Позиция по горизонтали */
+  bottom: 277px; /* Позиция относительно нижней границы панели */  
+  width: 422px; /* Ширина кнопки */
+  height: 280px; /* Высота кнопки */
+  position: absolute; /* Убедитесь, что элемент позиционируется */
+  transition: transform 0.2s; /* Перенесено сюда для плавного эффекта */
+  clip-path: polygon(14.14% 37.13%,15.41% 2.33%,75.77% 3.00%,100.00% 69.95%,83.82% 93.85%,47.90% 97.13%,8.62% 93.21%,1.68% 66.42%); /* Пример произвольной формы */
+  cursor: pointer;
+  background-size: cover;
+}
+
+.open-market-button:hover {
+  transform: scale(1.01); /* Эффект увеличения */
+}
+
+#close-market-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  background: url('assets/close_button.png') no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}

@@ -2,44 +2,152 @@
 
 /* Контейнер для никнейма */
 #nickname-container {
-  position: absolute; /* Убедимся, что позиционирование правильное */
-  z-index: 1000; /* Выставим приоритет выше, чтобы элементы сверху не перекрывали */
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.9); /* Легкий фон для видимости */
-  border: 1px solid #ccc;  
-  border-radius: 5px;
-  top: 5px; /* Начальная позиция */
-  left: 145px; /* Начальная позиция */
+  position: absolute;
+  z-index: 1000;
+  padding: 10px;  
+  top: 5px;
+  left: 115px;
+  width: 300px; /* Устанавливаем фиксированную ширину для контейнера */
+  height: 70px; /* Высота для формы */
+  overflow: hidden; /* Обрезаем элементы, выходящие за пределы */
 }
 
 /* Форма для ввода никнейма */
-#nickname-form {
+.nickname-form {
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 5px;
+  overflow: hidden;  
+  background-color: transparent; /* Убираем белый фон */
+}
+
+/* Изображение */
+.nickname-icon {
+  width: 300px;
+  height: 70px;
+  display: block; /* Важно для изображения, чтобы оно не скрывалось */
+}
+
+/* Содержимое формы (поля ввода и кнопки) */
+.form-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  align-items: center;
+  width: 60%;
+  left: 10px;
 }
 
 /* Поле ввода */
-#nickname-input {
+.nickname-input {
   flex: 1;
-  padding: 5px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
   outline: none;
+  width: 40%; /* Ширина поля ввода */
 }
 
-/* Кнопка сохранения */
-#nickname-form button {
-  padding: 5px 10px;
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 3px;
+/* Кнопка сохранения с фоном */
+.nickname-button {
+  width: 30px; /* Ширина кнопки соответствует размеру картинки */
+  height: 30px; /* Высота кнопки соответствует размеру картинки */
+  background-image: url('./assets/save_nick_button.png'); /* Путь к картинке кнопки */
+  background-size: cover; /* Картинка растягивается, чтобы заполнить кнопку */
+  background-repeat: no-repeat; /* Картинка не повторяется */
+  border: none; /* Убираем стандартные границы кнопки */
+  cursor: pointer; /* Курсор при наведении — указатель */
+  display: inline-block; /* Обеспечиваем корректное отображение кнопки */
+  padding: 0; /* Убираем внутренние отступы */
+  outline: none; /* Убираем контур при фокусе */
+  background-color: transparent; /* Убираем белый фон */
 }
 
-#nickname-form button:hover {
-  background-color: #0056b3;
+/* Состояние при наведении */
+.nickname-button:hover {
+  filter: brightness(0.9); /* Небольшое затемнение при наведении */
+}
+
+/* Состояние при нажатии */
+.nickname-button:active {
+  filter: brightness(0.8); /* Ещё большее затемнение при клике */
+}
+
+/* Фоновая картинка */
+.nickname-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Картинка заполняет весь контейнер */
+  z-index: 1;
+  background-color: transparent; /* Прозрачный фон */
+}
+
+/* Отображение никнейма */
+.nickname-display {
+  position: relative;
+  width: 300px; /* Установите подходящую ширину */
+  height: 70px; /* Установите подходящую высоту */
+  overflow: hidden; /* Убираем всё, что выходит за пределы */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Фон для отображения никнейма */
+.nickname-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/nickname.png'); /* Путь к вашей картинке */
+  background-size: cover; /* Растягиваем фон, чтобы он покрывал контейнер */
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 1; /* Убедимся, что фон под содержимым */
+}
+
+/* Текст и кнопка поверх фона */
+.nickname-text {
+  position: relative;
+  z-index: 2; /* Устанавливаем текст поверх фона */
+  font-size: 18px;
+  color: #fff; /* Белый текст поверх фона */
+  top: 10px;
+  left: 100px;
+}
+
+.nickname-change-button {
+  position: relative;
+  width: 30px; /* Установите ширину кнопки в соответствии с размером изображения */
+  height: 30px; /* Установите высоту кнопки */
+  background-image: url('./assets/change_nick_button.png'); /* Укажите путь к вашей картинке */
+  background-size: cover; /* Растягиваем картинку на весь размер кнопки */
+  background-repeat: no-repeat; /* Картинка не повторяется */
+  background-position: center; /* Центрируем картинку */
+  border: none; /* Убираем стандартные границы кнопки */
+  cursor: pointer; /* Курсор указателя при наведении */
+  padding: 0; /* Убираем внутренние отступы */
+  outline: none; /* Убираем контур при фокусе */
+  background-color: transparent; /* Прозрачный фон */
+  top: 20px;
+  left: 100px;
+}
+
+/* Состояние при наведении */
+.nickname-change-button:hover {
+  filter: brightness(0.9); /* Затемнение при наведении */
+}
+
+/* Состояние при нажатии */
+.nickname-change-button:active {
+  filter: brightness(0.8); /* Ещё большее затемнение при клике */
 }

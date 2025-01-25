@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Бой</title>
   <link rel="stylesheet" href="globals.css">
-  <link rel="stylesheet" href="cemetery.css">
+  <link rel="stylesheet" href="ancient_temple.css">
   <link rel="stylesheet" href="nicknameStyles.css">
-  <link rel="stylesheet" href="mobAttackSystem.css"> 
 </head>
 <body>
-  <div id="cemetery-container" style="position: absolute; width: 100%; height: 100%;">
+  <div id="ancienttemple-container" style="position: absolute; width: 100%; height: 100%;">
 
     <!-- Верхняя панель -->
     <div class="top-bar">
@@ -38,17 +37,17 @@
     <!-- Центральная часть с персонажами -->
     <div id="battle-area" style="position: relative; width: 100%; height: calc(100% - 480px);">
       <!-- Персонаж игрока -->
-      <img src="./assets/player.png" alt="Player" style="position: absolute; bottom: -275px; left: 27%; width: 350px; height: auto;">
+      <img src="./assets/player.png" alt="Player" style="position: absolute; bottom: -345px; left: 22%; width: 350px; height: auto;">
 
-      <!-- Контейнер для скелета с полоской здоровья -->
-      <div id="skeleton-container" style="position: absolute; bottom: -280px; right: 20%; width: 340px; height: auto;">        
-        <!-- Полоска здоровья скелета -->
-        <div class="skeleton-health-bar" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 300px; height: 40px; background-color: Transparent; overflow: hidden;">
-          <div id="skeleton-health-fill" style="width: 100%; height: 100%; background: url('./assets/health_bar_full.png') no-repeat left center; background-size: 300px 40px;"></div>
+      <!-- Контейнер для древнего стража с полоской здоровья -->
+      <div id="guardianwarrior-container" style="position: absolute; bottom: -345px; right: 20%; width: 400px; height: auto;">        
+        <!-- Полоска здоровья древнего стража -->
+        <div class="guardianwarrior-health-bar" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 300px; height: 40px; background-color: Transparent; overflow: hidden;">
+          <div id="guardianwarrior-health-fill" style="width: 100%; height: 100%; background: url('./assets/health_bar_full.png') no-repeat left center; background-size: 300px 40px;"></div>
         </div>
 
         <!-- Скелет -->
-        <img src="./assets/skeleton.png" alt="skeleton" id="skeleton" style="width: 100%; height: auto;">
+        <img src="./assets/guardian_warrior.png" alt="guardianwarrior" id="guardianwarrior" style="width: 100%; height: auto;">
       </div>
     </div>
 	
@@ -91,9 +90,9 @@
   <script type="module" src="./nicknameSystem.js"></script>
   <script type="module" src="./inventory.js"></script>
   <script type="module" src="mobAttackSystem.js"></script>
-  <script type="module" src="./cemetery.js"></script> 
-  <script type="module" src="experienceSystem.js"></script> 
-  <script type="module" src="./items.js"></script>  
+  <script type="module" src="./ancient_temple.js"></script> 
+  <script type="module" src="experienceSystem.js"></script>   
+  <script type="module" src="./items.js"></script>
   <script src="responsive.js"></script>    
   <script>
     document.addEventListener("DOMContentLoaded", () => {

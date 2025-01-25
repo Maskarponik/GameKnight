@@ -90,24 +90,30 @@
 #player-attack-log {
     position: absolute;
     bottom: 450px;
-    right: 330px;
+    right: 400px;
     z-index: 1110;
     display: flex;
+	font-size: 24px;
     flex-direction: column; /* Обычный порядок */
     align-items: flex-start; /* Выравнивание сообщений слева */
     gap: 20px; /* Расстояние между сообщениями */
     flex-wrap: nowrap; /* Сообщения отображаются только в одну строку */    
-	color: white;
+	color: red;
+
 }
 
 .damage-log {
+	position: absolute;
     padding: 5px 10px;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     color: white;
     opacity: 0; /* Изначально скрываем */    
     animation: slideDownFadeIn 0.4s ease-out forwards, slideDownFadeOut 0.3s ease-in 0.7s forwards;
     white-space: nowrap; /* Запрет на перенос текста */
+	right: 450px;
+	bottom: 90px;
+	z-index: 1100; /* Обеспечиваем видимость поверх других элементов */
 }
 
 /* Анимация появления сверху вниз */

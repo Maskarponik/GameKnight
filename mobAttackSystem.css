@@ -1,0 +1,45 @@
+/* styles.css */
+.damage-log {
+    position: absolute;
+    bottom: 400px;
+    right: 710px;
+    z-index: 1110;
+    display: flex;
+    flex-direction: column; /* Обычный порядок */
+    align-items: flex-start; /* Выравнивание сообщений слева */
+    gap: 20px; /* Расстояние между сообщениями */
+    flex-wrap: nowrap; /* Сообщения отображаются только в одну строку */ 
+    bottom: 90px;
+    right: 490px;
+    padding: 5px 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    opacity: 0; /* Изначально скрываем */    
+    animation: slideDownFadeIn 0.5s ease-out forwards, slideDownFadeOut 2s ease-in 2s forwards;
+    white-space: nowrap; /* Запрет на перенос текста */
+}
+
+/* Анимация появления сверху вниз */
+@keyframes slideDownFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация исчезновения вниз */
+@keyframes slideDownFadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+}
