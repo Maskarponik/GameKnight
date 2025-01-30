@@ -35,9 +35,22 @@ function levelUp(nickname, playerData) {
     playerData.experience -= playerData.level * EXP_PER_LEVEL;
     playerData.level += 1;
     
+        // Увеличиваем характеристики
+    playerData.maxHealth += 20; // Увеличиваем максимальное здоровье на 20
+    playerData.attackPower += 5; // Увеличиваем урон на 5
+    playerData.statPoints += 3; // Добавляем 3 поинта
+
+    // Восстанавливаем здоровье после повышения уровня
+    playerData.health = playerData.maxHealth;
+
+    // Сохраняем обновленные данные
     NicknameSystem.updatePlayerData(nickname, {
         level: playerData.level,
-        experience: playerData.experience
+        experience: playerData.experience,
+        maxHealth: playerData.maxHealth,
+        attackPower: playerData.attackPower,
+        statPoints: playerData.statPoints,
+        health: playerData.health, // Восстановленное здоровье
     });
 
     console.log(`Поздравляем! ${nickname} повысил уровень до ${playerData.level}`);

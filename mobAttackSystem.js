@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Инициализация базовых данных игрока
-    let { health, maxHealth, level } = playerData;
+    let { health, maxHealth, level, defense } = playerData;
 
     // Конфигурации мобов
     const mobs = {
@@ -87,25 +87,35 @@ document.addEventListener("DOMContentLoaded", () => {
     function calculateMobDamage(level, baseDamage) {
         return baseDamage + level * 2; // Пример формулы урона
     }
-
+    
+    function calculateDamageTaken(damage, defense) {
+        return Math.max(1, damage - defense); // Минимальный урон — 1
+    }
+    
     // Функция обновления здоровья игрока
     function updatePlayerHealth(damage) {
-        health = Math.max(health - damage, 0);
-        NicknameSystem.updatePlayerData(currentNickname, { health }); // Сохранение данных игрока
-        playerHealthText.textContent = `${health} / ${maxHealth}`;
+        const playerData = NicknameSystem.getPlayerData(currentNickname); // Загружаем данные игрока
+        if (!playerData) return;
+        const finalDamage = calculateDamageTaken(damage, playerData.defense); // Учитываем защиту
+        playerData.health = Math.max(playerData.health - finalDamage, 0);
+ 
+        NicknameSystem.updatePlayerData(currentNickname, { health: playerData.health });
+
+        playerHealthText.textContent = `${playerData.health} / ${playerData.maxHealth}`;
 
         // Лог атаки моба
         const damageText = document.createElement("div");
-        damageText.textContent = `${mobId.toUpperCase()} нанёс ${damage} урона!`;
+        damageText.textContent = `${mobId.toUpperCase()} нанёс ${finalDamage} урона!`;
         damageText.classList.add("damage-log");
         mobAttackLog.appendChild(damageText);
 
         setTimeout(() => damageText.remove(), 2000);
 
         // Проверка смерти игрока
-        if (health <= 0) {
-            clearInterval(attackIntervalId);
-            showDeathScreen(); // Отображение экрана смерти
+        if (playerData.health <= 0) {
+            clearInterval(attackIntervalId); // **Останавливаем атаку моба**
+            window.isMobAlive = false; // **Флаг для других скриптов**
+            showDeathScreen(); // **Отображаем экран смерти**
         }
     }    
     

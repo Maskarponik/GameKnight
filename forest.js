@@ -57,7 +57,8 @@ const NicknameSystem = (() => {
                 maxHealth: 100,
                 energy: 100,
                 maxEnergy: 100,
-                attackPower: 10,
+                attackPower: 20,
+                strength: 0, // Добавляем силу
             };
             savePlayersData(playersData);
         }
@@ -129,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Инициализация базовых данных игрока
-    let { coins, level, health, maxHealth, energy, maxEnergy, attackPower } = playerData;
+    let { coins, level, health, maxHealth, energy, maxEnergy, attackPower, strength } = playerData;
 
     // Инициализация данных гоблина
     const goblinMaxLevel = 20; // Максимальный уровень гоблина
@@ -176,6 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
     attackSystem.playerStats.health = health;
     attackSystem.playerStats.maxHealth = maxHealth;
     attackSystem.playerStats.attackPower = attackPower;
+    attackPower = 20 + strength * 5; 
 
     // Логика для управления гоблином
     window.isMobAlive = true;
@@ -199,7 +201,9 @@ document.addEventListener("DOMContentLoaded", () => {
     attackSystem.performAttack = function () {
         if (!window.isMobAlive || !window.isPlayerAlive) return;
         console.log('Игрок наносит удар гоблину!');
-        updateGoblinHealth(attackSystem.playerStats.attackPower);
+        const totalDamage = attackSystem.playerStats.attackPower + (playerData.strength * 5); // Бонус урона от силы
+        updateGoblinHealth(totalDamage);
+
 		
         // Добавляем сообщение об уроне в лог
         const playerAttackLog = document.getElementById("player-attack-log");

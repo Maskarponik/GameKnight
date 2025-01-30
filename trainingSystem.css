@@ -1,0 +1,62 @@
+/* Основные стили для окна тренировки */
+#training-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+}
+
+/* Заголовок окна */
+#training-window h2 {
+    margin-bottom: 15px;
+}
+
+/* Стили для списка характеристик */
+.training-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Кнопки улучшения характеристик */
+.training-stat button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.training-stat button:disabled {
+    background: gray;
+    cursor: not-allowed;
+}
+
+/* Закрыть окно */
+#close-training {
+    margin-top: 15px;
+    background: #dc3545;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#close-training:hover {
+    background: #c82333;
+}

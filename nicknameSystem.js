@@ -44,6 +44,7 @@ const NicknameSystem = (() => {
         const playersData = loadPlayersData();
         if (!doesNicknameExist(nickname)) {
             playersData[nickname] = {
+                statPoints: 0,
                 coins: 1000,
                 level: 1,
 				experience: 0,  // Новое поле опыта
@@ -52,12 +53,12 @@ const NicknameSystem = (() => {
                 maxHealth: 100, // Максимальное здоровье
                 energy: 100, // Начальное здоровье
                 maxEnergy: 100, // Максимальное здоровье
-				strength: 10,    // Сила
+				strength: 0,    // Сила
                 attackPower: 20,
 				attackSpeed: 1.0,  // Скорость атаки (чем меньше, тем быстрее удары)
                 criticalChance: 5, // 5% шанс крита
                 criticalMultiplier: 2.0, // Критический урон x2
-                defense: 5, // Уменьшение входящего урона
+                defense: 0, // Уменьшение входящего урона
                 dodgeChance: 3, // 3% шанс уклониться
             };
             savePlayersData(playersData);
@@ -78,9 +79,16 @@ const NicknameSystem = (() => {
     const updatePlayerData = (nickname, newData) => {
         const playersData = loadPlayersData();
         if (doesNicknameExist(nickname)) {
-            playersData[nickname] = { ...playersData[nickname], ...newData };
+            const player = playersData[nickname];
+
+            // Если обновляется сила (strength) или другое свойство, пересчитываем attackPower правильно
+            if (newData.strength !== undefined || newData.level !== undefined) {
+                newData.attackPower = 20 + (newData.strength ?? player.strength) * 5 + (newData.level ?? player.level - 1) * 5; 
+            }
+
+            playersData[nickname] = { ...player, ...newData };
             savePlayersData(playersData);
-            return true;
+            return true;;
         }
         console.warn(`Игрок с никнеймом "${nickname}" не найден.`);
         return false;
@@ -162,7 +170,8 @@ const checkLevelUp = (nickname) => {
 
             // Улучшение характеристик при повышении уровня
             playerData.maxHealth += 20;
-            playerData.attackPower += 5;
+            playerData.attackPower = 20 + (playerData.level - 1) * 5 + playerData.strength * 5;
+            playerData.statPoints += 3;
             playerData.health = playerData.maxHealth; // Полное восстановление здоровья
 
             // Показ уведомления о повышении уровня

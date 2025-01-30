@@ -2,6 +2,7 @@ import { inventory, addToInventory, updateInventoryUI, initializeInventorySlots 
 import NicknameSystem from './nicknameSystem.js';
 import Market from './market.js'; // Импортируем класс Market
 import Items from "./items.js";
+import TrainingSystem from "./trainingSystem.js";
 	
 document.addEventListener("DOMContentLoaded", () => {
   // Получение текущего никнейма
@@ -28,8 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let maxHealth = playerData.maxHealth ?? 100;
   let energy = playerData.energy ?? 100;
   let maxEnergy = playerData.maxEnergy ?? 100;
-  let attackPower = playerData.attackPower ?? 10;
+  let attackPower = (playerData.attackPower ?? 20) + (playerData.strength * 5);
+  let strength = playerData.strength ?? 0;
+  let defense = playerData.defense ?? 0;
 
+  const trainingSystem = new TrainingSystem(currentNickname);
+     
   // Элементы страницы
   const mapButton = document.getElementById("map-button");
   const trainButton = document.getElementById("train-button");
@@ -65,6 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	window.updateUI = updateUI;  
     const updatedPlayerData = NicknameSystem.getPlayerData(currentNickname);
 
+    updatedPlayerData.attackPower = 20 + updatedPlayerData.strength * 5; 
+    updatedPlayerData.attackSpeed = updatedPlayerData.attackSpeed ?? 1; // Загружаем скорость атаки
+
     coinsElement.textContent = updatedPlayerData.coins;
     levelElement.textContent = updatedPlayerData.level;
     healthBarFull.style.clipPath = `inset(0 0 0 ${100 - (updatedPlayerData.health / updatedPlayerData.maxHealth) * 100}%`;
@@ -84,9 +92,30 @@ document.addEventListener("DOMContentLoaded", () => {
       damageText.textContent = `${updatedPlayerData.attackPower}`;
     }
 
+    const strengthText = document.getElementById("strength-text");
+    if (strengthText) {
+      strengthText.textContent = `Сила: ${updatedPlayerData.strength}`;
+    }
+
+    const defenseText = document.getElementById("defense-text");
+    if (defenseText) {
+        defenseText.textContent = `Защита: ${updatedPlayerData.defense}`;
+    }
+
+    // Добавляем обновление для очков характеристик
+    const statPointsText = document.getElementById("stat-points-text");
+    if (statPointsText) {
+      statPointsText.textContent = `Очки характеристик: ${updatedPlayerData.statPoints}`;
+    }
+    
+    const attackSpeedText = document.getElementById("attack-speed-text");
+    if (attackSpeedText) {
+        attackSpeedText.textContent = `Скорость атаки: ${updatedPlayerData.attackSpeed.toFixed(2)}`;
+    }
+
     updateInventoryUI(inventorySlotsContainer);
   }
-
+  
   // Создаём экземпляр магазина
   const market = new Market(currentNickname);
 
@@ -100,7 +129,10 @@ document.addEventListener("DOMContentLoaded", () => {
       maxHealth,
       energy,
       maxEnergy,
-      attackPower
+      attackPower,
+      statPoints,
+      strength,
+      defense,
     };
 
     NicknameSystem.updatePlayerData(currentNickname, updatedData);
@@ -157,35 +189,16 @@ document.addEventListener("DOMContentLoaded", () => {
   mapButton.addEventListener("click", () => {  
       window.location.href = "map.html";    
   });
-
-  //Кнопка тренировки
-  trainButton.addEventListener("click", () => {
-    const playerData = NicknameSystem.getPlayerData(currentNickname);
-	
-	
-    if (playerData.energy >= 10) {
-        playerData.energy -= 10;   
-
-        // Сохраняем обновлённые данные игрока
-        NicknameSystem.updatePlayerData(currentNickname, playerData);
-   
-        // Добавляем опыт за тренировку (например, +150)
-        NicknameSystem.updateExperience(currentNickname, 150);
-        	 
-        // Проверяем, можно ли повысить уровень
-        NicknameSystem.checkLevelUp(currentNickname);         
-			
-        // Обновляем данные игрока из системы никнеймов
-        const updatedPlayerData = NicknameSystem.getPlayerData(currentNickname);
-        level = updatedPlayerData.level;  // Обновляем уровень
-        maxHealth = updatedPlayerData.maxHealth;  // Возможное увеличение макс. здоровья
-        attackPower = updatedPlayerData.attackPower ?? attackPower; // Атака после повышения уровня      
-        
-        updateUI();	  
-        showCustomAlert("custom-alert-train");
-    } else {
-        showCustomAlert("custom-alert-noenergy");
-    }    
+  
+  document.addEventListener("DOMContentLoaded", () => {
+      const trainButton = document.getElementById("train-button");
+      if (trainButton) {
+          trainButton.addEventListener("click", function () {
+              trainingSystem.openTrainingWindow();
+          });
+      } else {
+          console.error("Кнопка тренировки (train-button) не найдена в DOM!");
+      }
   });
 
   eatButton.addEventListener("click", () => { 

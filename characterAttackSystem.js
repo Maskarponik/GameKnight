@@ -48,9 +48,12 @@ export class characterAttackSystem {
         return {
             health: 100,
             maxHealth: 100,
-            attackPower: 10,
+            attackPower: 20,
+            strength: 0, // Добавляем силу
             mana: 50,
             stamina: 50,
+            attackSpeed: 1.0,
+            defense: 0,
         };
     }
 
@@ -143,7 +146,7 @@ export class characterAttackSystem {
         const mobHealthBar = document.querySelector('.mob-health-fill');
         if (mobHealthBar) {
             let currentHealth = parseFloat(mobHealthBar.style.width) || 100; // Текущая ширина полосы
-			const damage = this.playerStats.attackPower;
+			const damage = this.playerStats.attackPower + (this.playerStats.strength * 5); // Учитываем силу
             currentHealth = Math.max(currentHealth - damage, 0);
             mobHealthBar.style.width = `${currentHealth}%`;
 
@@ -191,6 +194,7 @@ export class characterAttackSystem {
     // Включение/выключение автоматической атаки
     toggleAutoAttack() {
         if (this.autoAttackEnabled) {
+            const attackInterval = 1000 / this.playerStats.attackSpeed; // Чем выше attackSpeed, тем короче задержка
             this.autoAttackInterval = setInterval(() => {
                 if (window.isMobAlive && window.isPlayerAlive) {
                     this.performAttack();
@@ -198,7 +202,7 @@ export class characterAttackSystem {
                 } else {
                     this.toggleAutoAttack(); // Остановить, если бой завершен
                 }
-            }, 1000);
+            }, attackInterval); // Используем динамический интервал
         } else {
             clearInterval(this.autoAttackInterval);
             this.autoAttackInterval = null;
