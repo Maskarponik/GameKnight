@@ -1,26 +1,3 @@
-#battle-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: url('./assets/cemetery_background.png') no-repeat center center;
-  background-size: cover;
-}
-
-.top-bar {
-  position: absolute; /* Абсолютное позиционирование относительно родителя */
-  top: 0; /* Прижимаем к верхней границе */
-  left: 0; /* Прижимаем к левой границе */
-  width: 500px; /* Ширина панели */
-  height: 235px; /* Высота панели */
-  background: url('./assets/top_bar.png') no-repeat center center;
-  background-size: cover; /* Масштабирование фонового изображения */
-  display: flex;
-  align-items: center; /* Выравнивание по вертикали */
-  justify-content: space-between; /* Равномерное распределение элементов */
-  padding: 1px; /* Отступ внутри панели */
-  box-sizing: border-box; /* Учитываем padding в общей ширине и высоте */
-}
-
 .bar-text {
   position: absolute;
   width: 100%; /* Ширина текста совпадает с шириной полосы */
@@ -30,52 +7,84 @@
   justify-content: center; /* Центрируем текст по горизонтали */
   color: white; /* Цвет текста */
   font-family: Arial, sans-serif; /* Шрифт */
-  font-size: 20px; /* Размер шрифта */
+  font-size: 17px; /* Размер шрифта */
   font-weight: bold; /* Жирный текст */
   z-index: 2; /* Располагаем текст поверх других элементов */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Тень текста */
-  transform: translate(-20px, -12px); /* Регулируем положение текста */
+  transform: translate(-35px, 12px); /* Регулируем положение текста */
   box-sizing: border-box; /* Учитываем отступы и границы */
 }
 
-.energy-bar {
-  position: absolute;
-  width: 350px;  /* Ширина полоски */
-  height: 70px;  /* Высота полоски */
-  margin-top: 10px;  /* Отступ от других элементов */
-  right: 5%; /* Сдвиг влево */
-  top: 50%; /* Сдвиг вниз */
-}
-
 .health-bar {
-  position: absolute;
-  width: 350px;  /* Ширина полоски */
-  height: 70px;  /* Высота полоски */
-  margin-top: 10px;  /* Отступ от других элементов */
-  right: 5%; /* Сдвиг влево */
-  top: 32%; /* Сдвиг вниз */
+  position: relative;
+  top: 55px; /* Прижимаем к верхней границе */
+  left: 200px; /* Прижимаем к левой границе */
+  width: 300px;  /* Ширина полоски */
+  height: 25px;  /* Высота полоски */  
+  border-radius: 10px; /* Закругленные углы, если нужно */
+  z-index: 3; /* Полоска под рамкой */
 }
 
+.energy-bar {
+  position: relative;
+  top: 70px; /* Прижимаем к верхней границе */
+  left: 200px; /* Прижимаем к левой границе */
+  width: 300px;  /* Ширина полоски */
+  height: 27px;  /* Высота полоски */  
+  border-radius: 10px; /* Закругленные углы, если нужно */
+  z-index: 1; /* Полоска под рамкой */  
+}
+
+.energy-bar-full {
+  position: absolute;
+  top: 17px;
+  left: 9px;
+  width: 212px; /* Начальная ширина (можно менять динамически) */
+  height: 17px;
+  background-color: #DAA520; /* Цвет полоски энергии (зеленый) */
+  border-radius: 10px; /* Закругленные края */
+  z-index: 1; /* Полоска под рамкой */
+}
+
+.energy-bar-frame {  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 230px;  /* Ширина полоски */
+  height: 50px;  /* Высота полоски */  
+  z-index: 1; /* Рамка поверх полоски */
+  pointer-events: none; /* Чтобы рамка не мешала взаимодействию */
+}
+
+.health-bar-frame {  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;  /* Ширина полоски */
+  height: 50px;  /* Высота полоски */  
+  z-index: 1; /* Рамка поверх полоски */
+  pointer-events: none; /* Чтобы рамка не мешала взаимодействию */
+}
+
+.health-bar-full {
+  position: absolute;
+  top: 15px;
+  left: 7px;
+  width: 234px; /* Начальная ширина (можно менять динамически) */
+  height: 20px;
+  background-color: #32CD32; /* Цвет полоски энергии (зеленый) */
+  border-radius: 10px; /* Закругленные края */
+  z-index: 1; /* Полоска под рамкой */
+}
 .character-frame {
   position: absolute; /* Позиционирование относительно .top-bar */
-  top: 45px; /* Прижимаем к верхнему краю родителя */
-  left: -10px; /* Прижимаем к левому краю родителя */
-  width: 150px; /* Задаём ширину рамки */
-  height: 150px; /* Задаём высоту рамки */
+  top: 5px; /* Прижимаем к верхнему краю родителя */
+  left: 15px; /* Прижимаем к левому краю родителя */
+  width: 230px; /* Задаём ширину рамки */
+  height: 230px; /* Задаём высоту рамки */
   background: url('./assets/frame_character.png') no-repeat center center; /* Фон */
   background-size: contain; /* Масштабируем фон по рамке */
   z-index: 10; /* Обеспечиваем видимость поверх других элементов */
-}
-
-
-.timer {
-  position: absolute;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: Arial, sans-serif;
-  font-size: 36px;
-  color: white;
 }
 
 #fight-zone {
@@ -85,59 +94,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-#player-attack-log {
-    position: absolute;
-    bottom: 450px;
-    right: 400px;
-    z-index: 1110;
-    display: flex;
-	font-size: 24px;
-    flex-direction: column; /* Обычный порядок */
-    align-items: flex-start; /* Выравнивание сообщений слева */
-    gap: 20px; /* Расстояние между сообщениями */
-    flex-wrap: nowrap; /* Сообщения отображаются только в одну строку */    
-	color: red;
-
-}
-
-.damage-log {
-	position: absolute;
-    padding: 5px 10px;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    opacity: 0; /* Изначально скрываем */    
-    animation: slideDownFadeIn 0.4s ease-out forwards, slideDownFadeOut 0.3s ease-in 0.7s forwards;
-    white-space: nowrap; /* Запрет на перенос текста */
-	right: 450px;
-	bottom: 90px;
-	z-index: 1100; /* Обеспечиваем видимость поверх других элементов */
-}
-
-/* Анимация появления сверху вниз */
-@keyframes slideDownFadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Анимация исчезновения вниз */
-@keyframes slideDownFadeOut {
-    0% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
 }
 
 .bottom-panel {
@@ -160,7 +116,7 @@
   gap: -5px; /* Отступ между иконкой и текстом */
   position: absolute;
   bottom: 55px; /* Сдвиг от верхнего края */
-  right: 255px; /* Сдвиг от правого края */
+  right: 615px; /* Сдвиг от правого края */
   z-index: 100; /* Убедитесь, что панель видима поверх других элементов */
 }
 
@@ -180,12 +136,18 @@
 
 .level {
   display: flex;
-  align-items: center; /* Выравнивание текста и иконки по вертикали */
-  gap: 1px; /* Отступ между иконкой и текстом */
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center; /* Центрирование по вертикали */
   position: absolute;
-  bottom: 55px; /* Сдвиг от верхнего края */
-  right: 130px; /* Сдвиг от правого края */
-  z-index: 100; /* Убедитесь, что панель видима поверх других элементов */
+  bottom: 735px; /* Позиция относительно родителя */
+  left: 188px; /* Позиция относительно родителя */
+  z-index: 45; /* Обеспечиваем видимость поверх других элементов */
+  transform: translate(-50%, -50%); /* Центрирование относительно собственных размеров */
+  min-width: 40px; /* Минимальная ширина для однозначных чисел */
+  padding: 5px; /* Отступы для текста */
+  font-size: 16px; /* Размер текста */
+  text-align: center; /* Центрирование текста */
+  background-color: transparent; /* Прозрачный фон */
 }
 
 .level img {

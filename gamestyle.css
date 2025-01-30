@@ -4,7 +4,7 @@
   left: 0; /* Прижимаем к левой границе */
   width: 500px; /* Ширина панели */
   height: 235px; /* Высота панели */
-  background: url('./assets/top_bar.png') no-repeat center center;
+  background: url('./assets/toфp_bar.png') no-repeat center center;
   background-size: cover; /* Масштабирование фонового изображения */
   display: flex;
   align-items: center; /* Выравнивание по вертикали */
@@ -22,56 +22,84 @@
   justify-content: center; /* Центрируем текст по горизонтали */
   color: white; /* Цвет текста */
   font-family: Arial, sans-serif; /* Шрифт */
-  font-size: 20px; /* Размер шрифта */
+  font-size: 17px; /* Размер шрифта */
   font-weight: bold; /* Жирный текст */
   z-index: 2; /* Располагаем текст поверх других элементов */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Тень текста */
-  transform: translate(-20px, -12px); /* Регулируем положение текста */
+  transform: translate(-35px, 12px); /* Регулируем положение текста */
   box-sizing: border-box; /* Учитываем отступы и границы */
 }
 
-.energy-bar {
-  position: absolute;
-  width: 350px;  /* Ширина полоски */
-  height: 70px;  /* Высота полоски */
-  margin-top: 10px;  /* Отступ от других элементов */
-  right: 5%; /* Сдвиг влево */
-  top: 50%; /* Сдвиг вниз */
-}
-
 .health-bar {
-  position: absolute;
-  width: 350px;  /* Ширина полоски */
-  height: 70px;  /* Высота полоски */
-  margin-top: 10px;  /* Отступ от других элементов */
-  right: 5%; /* Сдвиг влево */
-  top: 32%; /* Сдвиг вниз */
+  position: relative;
+  bottom: 34px; /* Прижимаем к верхней границе */
+  left: 200px; /* Прижимаем к левой границе */
+  width: 300px;  /* Ширина полоски */
+  height: 25px;  /* Высота полоски */  
+  border-radius: 10px; /* Закругленные углы, если нужно */
+  z-index: 3; /* Полоска под рамкой */
 }
 
+.energy-bar {
+  position: relative;
+  bottom: 20px; /* Прижимаем к верхней границе */
+  left: 200px; /* Прижимаем к левой границе */
+  width: 300px;  /* Ширина полоски */
+  height: 27px;  /* Высота полоски */  
+  border-radius: 10px; /* Закругленные углы, если нужно */
+  z-index: 1; /* Полоска под рамкой */  
+}
+
+.energy-bar-full {
+  position: absolute;
+  top: 17px;
+  left: 9px;
+  width: 212px; /* Начальная ширина (можно менять динамически) */
+  height: 17px;
+  background-color: #DAA520; /* Цвет полоски энергии (зеленый) */
+  border-radius: 10px; /* Закругленные края */
+  z-index: 1; /* Полоска под рамкой */
+}
+
+.energy-bar-frame {  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 230px;  /* Ширина полоски */
+  height: 50px;  /* Высота полоски */  
+  z-index: 1; /* Рамка поверх полоски */
+  pointer-events: none; /* Чтобы рамка не мешала взаимодействию */
+}
+
+.health-bar-frame {  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;  /* Ширина полоски */
+  height: 50px;  /* Высота полоски */  
+  z-index: 1; /* Рамка поверх полоски */
+  pointer-events: none; /* Чтобы рамка не мешала взаимодействию */
+}
+
+.health-bar-full {
+  position: absolute;
+  top: 15px;
+  left: 7px;
+  width: 234px; /* Начальная ширина (можно менять динамически) */
+  height: 20px;
+  background-color: #32CD32; /* Цвет полоски энергии (зеленый) */
+  border-radius: 10px; /* Закругленные края */
+  z-index: 1; /* Полоска под рамкой */
+}
 .character-frame {
   position: absolute; /* Позиционирование относительно .top-bar */
-  top: 45px; /* Прижимаем к верхнему краю родителя */
-  left: -10px; /* Прижимаем к левому краю родителя */
-  width: 150px; /* Задаём ширину рамки */
-  height: 150px; /* Задаём высоту рамки */
+  top: 5px; /* Прижимаем к верхнему краю родителя */
+  left: 15px; /* Прижимаем к левому краю родителя */
+  width: 230px; /* Задаём ширину рамки */
+  height: 230px; /* Задаём высоту рамки */
   background: url('./assets/frame_character.png') no-repeat center center; /* Фон */
   background-size: contain; /* Масштабируем фон по рамке */
   z-index: 10; /* Обеспечиваем видимость поверх других элементов */
-}
-
-/* Новый стиль для отображения урона */
-.damage-text {
-  position: absolute;
-  top: 87%;
-  left: 62%;
-  righ: 15%;
-  transform: translate(50%, 50%); /* Центрируем по горизонтали и вертикали */
-  font-family: Arial, sans-serif;
-  font-size: 30px; /* Размер шрифта */
-  font-weight: bold; /* Жирный шрифт */
-  color: white; /* Белый цвет текста */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
-  z-index: 990; /* Убедимся, что текст урона будет поверх других элементов */
 }
 
 /* Уведомление о тренировке */
@@ -136,7 +164,7 @@
   bottom: 0; /* Фиксация у нижнего края экрана */
   width: 100%; /* Панель занимает всю ширину экрана */
   height: 184px; /* Задаём фиксированную высоту */
-  background: url('./assets/bottom_panel.png') no-repeat center center;
+  background: url('./assets/bottom1_panel.png') no-repeat center center;
   background-size: cover; /* Изображение фона масштабируется */
   display: flex; /* Используется для выравнивания содержимого панели */
   justify-content: space-between; /* Распределение элементов по ширине */
@@ -148,8 +176,8 @@
   align-items: center; /* Выравнивание текста и иконки по вертикали */
   gap: -5px; /* Отступ между иконкой и текстом */
   position: absolute;
-  bottom: 55px; /* Сдвиг от верхнего края */
-  right: 255px; /* Сдвиг от правого края */
+  top: 52px; /* Сдвиг от верхнего края */
+  right: 235px; /* Сдвиг от правого края */
 }
 
 .coin img {
@@ -158,21 +186,37 @@
 }
 
 #coins {
+  position: absolute;
   font-family: Arial, sans-serif;
   font-size: 20px; /* Размер шрифта */
   font-weight: bold; /* Жирный шрифт */
   color: white; /* Белый цвет текста */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
-  right: 10px; /* Сдвиг от правого края */
+  left: 115px; /* Сдвиг от правого края */
 }
+
+.frame-coin {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: -5px;
+  left: 1580px;
+} 
 
 .level {
   display: flex;
-  align-items: center; /* Выравнивание текста и иконки по вертикали */
-  gap: 1px; /* Отступ между иконкой и текстом */
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center; /* Центрирование по вертикали */
   position: absolute;
-  bottom: 55px; /* Сдвиг от верхнего края */
-  right: 130px; /* Сдвиг от правого края */
+  bottom: 735px; /* Позиция относительно родителя */
+  left: 188px; /* Позиция относительно родителя */
+  z-index: 45; /* Обеспечиваем видимость поверх других элементов */
+  transform: translate(-50%, -50%); /* Центрирование относительно собственных размеров */
+  min-width: 40px; /* Минимальная ширина для однозначных чисел */
+  padding: 5px; /* Отступы для текста */
+  font-size: 16px; /* Размер текста */
+  text-align: center; /* Центрирование текста */
+  background-color: transparent; /* Прозрачный фон */
 }
 
 .level img {
@@ -202,12 +246,12 @@
 .map {
   background-image: url('./assets/map.png');
   position: absolute; /* Абсолютное позиционирование кнопки */
-  left: 849px; /* Горизонтальное положение */
-  bottom: 34px; /* Положение относительно нижней границы панели */
-  width: 300px; /* Ширина кнопки */
-  height: 280px; /* Высота кнопки */
+  right: 950px;
+  bottom: 2px;
+  width: 200px;
+  height: 200px;
   z-index: 10; /* Устанавливаем приоритет отображения выше панели */
-  clip-path: polygon(8.20% 46.88%,13.61% 29.34%,26.19% 15.92%,49.02% 10.40%,73.59% 16.65%,86.84% 34.77%,90.29% 57.93%,82.35% 76.37%,66.90% 89.23%,45.71% 93.70%,25.01% 85.94%,11.62% 69.32%); /* Пример произвольной формы */
+  clip-path: polygon(23.39% 23.89%,37.96% 2.44%,62.26% 2.09%,74.69% 6.63%,89.36% 15.51%,90.44% 41.20%,95.32% 65.89%,98.95% 77.86%,92.65% 93.29%,68.13% 98.22%,18.84% 98.95%,6.44% 96.37%,1.89% 71.19%,1.72% 56.16%,8.26% 40.09%); /* Пример произвольной формы */
   cursor: pointer;  
 }
 
@@ -217,15 +261,16 @@
  
 .train {
   background-image: url('./assets/training_button.png');
-  left: 1065px; /* Позиция по горизонтали */
-  bottom: 204px; /* Позиция относительно нижней границы панели */  
+  left: 1105px; /* Позиция по горизонтали */
+  bottom: 174px; /* Позиция относительно нижней границы панели */  
   width: 850px; /* Ширина кнопки */
-  height: 600px; /* Высота кнопки */
+  height: 650px; /* Высота кнопки */
   position: absolute; /* Убедитесь, что элемент позиционируется */
   transition: transform 0.2s; /* Перенесено сюда для плавного эффекта */
-  clip-path: polygon(21.92% 62.89%,34.21% 42.09%,43.14% 0.00%,100.00% 34.68%,87.88% 99.80%,9.74% 98.32%,5.04% 84.87%); /* Пример произвольной формы */
+  clip-path: polygon(10.64% 95.28%,8.76% 74.93%,16.12% 64.38%,26.57% 56.82%,37.31% 32.31%,32.63% 25.40%,35.85% 0.00%,43.26% 0.00%,48.03% 12.66%,58.13% 20.38%,75.21% 24.23%,83.97% 10.94%,88.65% 18.90%,88.84% 38.09%,91.98% 53.04%,91.94% 69.08%,88.41% 95.18%,74.23% 100%,46.29% 100%,23.69% 99.69%); /* Пример произвольной формы */
   cursor: pointer;
   background-size: cover;
+  z-index: 2;
 }
 
 .train:hover {
@@ -246,7 +291,7 @@
   height: 600px; /* Высота кнопки */
   position: absolute; /* Убедитесь, что элемент позиционируется */
   transition: transform 0.2s; /* Перенесено сюда для плавного эффекта */  
-  clip-path: polygon(13.10% 53.18%,23.84% 46.01%,26.75% 22.22%,70.87% 24.41%,88.30% 56.85%,83.62% 74.69%,51.17% 79.41%,28.93% 76.28%,14.28% 71.42%); /* Пример произвольной формы */
+  clip-path: polygon(16.39% 69.30%,12.54% 59.84%,14.95% 49.68%,23.02% 48.54%,26.33% 25.35%,34.59% 23.97%,43.54% 26.14%,44.39% 20.17%,50.56% 22.97%,58.12% 28.53%,71.93% 25.51%,75.77% 42.85%,87.17% 58.64%,85.68% 72.54%,70.23% 78.52%,49.30% 79.45%,32.01% 76.65%,20.48% 76.84%); /* Пример произвольной формы */
   cursor: pointer;
   background-size: cover;
 }
@@ -258,18 +303,17 @@
 /* Стиль для кнопки инвентаря */
 #inventory-button {
   position: absolute;
-  bottom: 40px;  /* Расположение снизу */
-  left: 580px;    /* Расположение слева */
-  width: 300px;   /* Ширина кнопки */
-  height: 120px;  /* Высота кнопки */
+  bottom: 30px;  /* Расположение снизу */
+  left: 105px;    /* Расположение слева */
+  width: 190px;   /* Ширина кнопки */
+  height: 190px;  /* Высота кнопки */
   background-image: url('./assets/inventory.png'); /* Картинка кнопки */
   background-size: cover; /* Обеспечиваем, чтобы картинка покрывала кнопку */
   background-repeat: no-repeat;
   cursor: pointer;
   z-index: 1000; /* Убедимся, что кнопка будет на переднем плане */  
-  background-color: transparent; /* Прозрачный фон */
-  clip-path: polygon(0.00% 12.18%,42.44% 7.24%,97.20% 7.81%,95.47% 47.07%,99.58% 92.82%,70.40% 93.78%,4.14% 92.24%,0.13% 89.63%); /* Пример произвольной формы */
-  cursor: pointer;  
+  background-color: transparent; /* Прозрачный фон */     
+  clip-path: polygon(21.85% 22.20%,33.62% 11.59%,48.81% 8.99%,61.80% 11.42%,74.23% 17.48%,83.86% 26.56%,85.52% 34.63%,76.12% 53.92%,82.71% 57.95%,82.27% 92.73%,38.59% 94.16%,11.62% 93.41%,10.01% 71.33%,11.94% 56.44%,17.92% 39.67%); /* Пример произвольной формы */
   transition: transform 0.2s ease; /* Плавный переход */
 }
 
@@ -289,10 +333,29 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url('./assets/inventory_window.png?v=2');
+  background-image: url('./assets/inventory_window.png?v=3');
   background-size: cover;
   z-index: 1002;  
   box-sizing: border-box; /* Учитываем padding внутри размеров */ 
+}
+
+/* Новый стиль для отображения урона */
+.damage-text {
+  position: absolute;  
+  top: 380px;
+  left: 65px;
+  rights: 21%;
+  transform: translate(50%, 50%); /* Центрируем по горизонтали и вертикали */
+  font-family: Arial, sans-serif;
+  font-size: 20px; /* Размер шрифта */
+  font-weight: bold; /* Жирный шрифт */
+  color: white; /* Белый цвет текста */
+  text-align: center; /* Центрирование текста */
+  transform: translate(-50%, -50%); /* Центрирование относительно собственных размеров */
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center; /* Центрирование по вертикали */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
+  z-index: 1290; /* Убедимся, что текст урона будет поверх других элементов */
 }
 
 .inventory-grid {
@@ -349,20 +412,22 @@
   left: 400px;
   align-items: center;
   justify-content: center;
-  border: 5px solid #A0522D; 
+  outline: 5px solid #A0522D; /* Замени border на outline */ 
 }
 
 .dragging {
   opacity: 0.7; /* Прозрачность перетаскиваемого элемента */
   position: fixed; /* Фиксируем позицию, чтобы не двигался родительский элемент */
   pointer-events: none;
-  z-index: 1003; /* Поверх всех элементов */
+  z-index: 1203; /* Поверх всех элементов */
+  transform: translate(0, 0); /* Добавь это */
+  background: transparent; /* Убедись, что фон прозрачный */
+  box-shadow: none; /* Убедись, что тени нет */
 }
 
 .inventory-slot img {
   width: 80%; /* Размер предмета внутри слота */
-  height: 80%;
-  pointer-events: none; /* Отключение взаимодействия с изображением */
+  height: 80%;  
 }
 
 .use-button {
@@ -381,17 +446,7 @@
 
 .inventory-slot:hover .use-button {
   display: block;
-}
-
-.inventory-slot.dragging img {
-  pointer-events: none; /* Исключаем взаимодействие с изображением при перетаскивании */
-  transform: scale(1.2); /* Увеличиваем предмет для визуального эффекта */
-  transition: transform 0.2s ease; /* Плавное увеличение */
-}
-
-.inventory-slot.over {
-  border: 3px dashed #4caf50; /* Зеленый цвет для подсказки доступного слота */
-  background-color: rgba(76, 175, 80, 0.1); /* Легкий зеленый фон */
+  z-index: 1203; /* Поверх всех элементов */
 }
 
 /* Отключение выделения текста для всех слотов инвентаря */
@@ -404,28 +459,24 @@
 
 .inventory-slot:active {
   cursor: grabbing; /* Изменение курсора при перетаскивании */
+  border: none; /* Убери рамку, если она есть */
 }
 
 /* Стили для кнопок управления */
 #inventory-controls {
-  position: absolute; /* Установка относительного расположения */
-  bottom: 60px; /* Отступ от нижнего края */
-  left: 50%; /* Центрирование по горизонтали */
-  transform: translateX(-50%); /* Корректное центрирование */
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  gap: 10px; /* Расстояние между кнопками */
-  z-index: 1100; /* Обеспечение верхнего слоя */
+  gap: 10px;
+  z-index: 1100;
 }
 
 #inventory-controls button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Тень */
   transition: background-color 0.3s ease;
 }
 
@@ -436,14 +487,15 @@
 /* Стили для модального окна */
 #confirmation-modal {
   position: fixed;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 300px;
+  width: 500px;
+  height: 150px;
   padding: 20px;
-  background-color: red;
-  border: 2px solid #4caf50;
-  border-radius: 8px;
+  color: white;
+  background: url('./assets/moda_confirm.png') no-repeat center center;
+  background-size: cover; /* Адаптация фонового изображения */
   z-index: 1150;
   display: none;
 }
@@ -453,24 +505,67 @@
 }
 
 .modal-content {
-  text-align: center;
+  position: relative; /* Чтобы кнопки позиционировались относительно контейнера */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column; /* Размещаем элементы вертикально */
 }
 
+#confirmation-text {
+  position: absolute;
+  top: 20%;
+  left: 18%;
+  margin: 0; /* Убираем отступы у текста */
+  font-size: 28px; /* Размер текста */
+  font-weight: bold; /* Жирный текст */  
+  gap: -50px;
+}
+
+/* Общие стили для кнопок */
 .modal-content button {
-  margin: 10px;
-  padding: 5px 15px;
-  font-size: 14px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none; /* Убираем границы */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  color: transparent; /* Скрываем текст */
+  background-color: transparent; /* Прозрачный фон */
+  transition: transform 0.3s ease; /* Добавляем анимацию при наведении */
 }
 
 .modal-content button:hover {
-  background-color: #45a049;
+  transform: scale(1.1); /* Увеличение кнопки при наведении */
 }
+
+/* Кнопка "Да" */
+#confirm-yes-button {
+  position: absolute;
+  background-image: url('./assets/confirm_yes_button.png');
+  width: 70px;
+  height: 70px;
+  top: 70%;
+  left: 30%;
+  border: none; /* Убираем границы */
+  cursor: pointer;
+  background-color: transparent; /* Прозрачный фон */
+}
+
+/* Кнопка "Нет" */
+#confirm-no-button {
+  position: absolute;
+  background-image: url('./assets/confirm_no_button.png');
+  width: 70px;
+  height: 70px;
+  top: 70%;
+  left: 48%;
+  border: none; /* Убираем границы */
+  cursor: pointer;
+  background-color: transparent; /* Прозрачный фон */
+}
+
 
 .selected {
     border: 2px solid red;

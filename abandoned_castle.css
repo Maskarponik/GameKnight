@@ -1,0 +1,187 @@
+#battle-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url('./assets/cemetery_background.png') no-repeat center center;
+  background-size: cover;
+}
+
+.top-bar {
+  position: absolute; /* Абсолютное позиционирование относительно родителя */
+  top: 0; /* Прижимаем к верхней границе */
+  left: 0; /* Прижимаем к левой границе */
+  width: 500px; /* Ширина панели */
+  height: 235px; /* Высота панели */
+  background: url('./assets/top_sbar.png') no-repeat center center;
+  background-size: cover; /* Масштабирование фонового изображения */
+  display: flex;
+  align-items: center; /* Выравнивание по вертикали */
+  justify-content: space-between; /* Равномерное распределение элементов */
+  padding: 1px; /* Отступ внутри панели */
+  box-sizing: border-box; /* Учитываем padding в общей ширине и высоте */
+}
+
+.bar-text {
+  position: absolute;
+  width: 100%; /* Ширина текста совпадает с шириной полосы */
+  height: 100%; /* Высота текста совпадает с высотой полосы */
+  display: flex; /* Flexbox для выравнивания */
+  align-items: center; /* Центрируем текст по вертикали */
+  justify-content: center; /* Центрируем текст по горизонтали */
+  color: white; /* Цвет текста */
+  font-family: Arial, sans-serif; /* Шрифт */
+  font-size: 17px; /* Размер шрифта */
+  font-weight: bold; /* Жирный текст */
+  z-index: 2; /* Располагаем текст поверх других элементов */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Тень текста */
+  transform: translate(-35px, 12px); /* Регулируем положение текста */
+  box-sizing: border-box; /* Учитываем отступы и границы */
+}
+
+.health-bar {
+  position: relative;
+  bottom: 35px; /* Прижимаем к верхней границе */
+  left: 200px; /* Прижимаем к левой границе */
+  width: 300px;  /* Ширина полоски */
+  height: 25px;  /* Высота полоски */  
+  border-radius: 10px; /* Закругленные углы, если нужно */
+  z-index: 3; /* Полоска под рамкой */
+}
+
+.energy-bar {
+  position: relative;
+  bottom: 20px; /* Прижимаем к верхней границе */
+  left: 200px; /* Прижимаем к левой границе */
+  width: 300px;  /* Ширина полоски */
+  height: 27px;  /* Высота полоски */  
+  border-radius: 10px; /* Закругленные углы, если нужно */
+  z-index: 1; /* Полоска под рамкой */  
+}
+
+.energy-bar-full {
+  position: absolute;
+  top: 17px;
+  left: 9px;
+  width: 212px; /* Начальная ширина (можно менять динамически) */
+  height: 17px;
+  background-color: #DAA520; /* Цвет полоски энергии (зеленый) */
+  border-radius: 10px; /* Закругленные края */
+  z-index: 1; /* Полоска под рамкой */
+}
+
+.energy-bar-frame {  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 230px;  /* Ширина полоски */
+  height: 50px;  /* Высота полоски */  
+  z-index: 1; /* Рамка поверх полоски */
+  pointer-events: none; /* Чтобы рамка не мешала взаимодействию */
+}
+
+.health-bar-frame {  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;  /* Ширина полоски */
+  height: 50px;  /* Высота полоски */  
+  z-index: 1; /* Рамка поверх полоски */
+  pointer-events: none; /* Чтобы рамка не мешала взаимодействию */
+}
+
+.health-bar-full {
+  position: absolute;
+  top: 15px;
+  left: 7px;
+  width: 234px; /* Начальная ширина (можно менять динамически) */
+  height: 20px;
+  background-color: #32CD32; /* Цвет полоски энергии (зеленый) */
+  border-radius: 10px; /* Закругленные края */
+  z-index: 1; /* Полоска под рамкой */
+}
+.character-frame {
+  position: absolute; /* Позиционирование относительно .top-bar */
+  top: 5px; /* Прижимаем к верхнему краю родителя */
+  left: 15px; /* Прижимаем к левому краю родителя */
+  width: 230px; /* Задаём ширину рамки */
+  height: 230px; /* Задаём высоту рамки */
+  background: url('./assets/frame_character.png') no-repeat center center; /* Фон */
+  background-size: contain; /* Масштабируем фон по рамке */
+  z-index: 10; /* Обеспечиваем видимость поверх других элементов */
+}
+
+#fight-zone {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-panel {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 184px; /* Убедитесь, что высота задана */
+  background: url('./assets/bottom_panel.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100; /* Убедитесь, что панель видима поверх других элементов */
+}
+
+
+.coin {
+  display: flex;
+  align-items: center; /* Выравнивание текста и иконки по вертикали */
+  gap: -5px; /* Отступ между иконкой и текстом */
+  position: absolute;
+  bottom: 55px; /* Сдвиг от верхнего края */
+  right: 615px; /* Сдвиг от правого края */
+  z-index: 100; /* Убедитесь, что панель видима поверх других элементов */
+}
+
+.coin img {
+  width: 80px; /* Размер иконки монеты */
+  height: 80px;
+}
+
+#coins {
+  font-family: Arial, sans-serif;
+  font-size: 20px; /* Размер шрифта */
+  font-weight: bold; /* Жирный шрифт */
+  color: white; /* Белый цвет текста */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
+  right: 10px; /* Сдвиг от правого края */
+}
+
+.level {
+  display: flex;
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center; /* Центрирование по вертикали */
+  position: absolute;
+  bottom: 735px; /* Позиция относительно родителя */
+  left: 188px; /* Позиция относительно родителя */
+  z-index: 45; /* Обеспечиваем видимость поверх других элементов */
+  transform: translate(-50%, -50%); /* Центрирование относительно собственных размеров */
+  min-width: 40px; /* Минимальная ширина для однозначных чисел */
+  padding: 5px; /* Отступы для текста */
+  font-size: 16px; /* Размер текста */
+  text-align: center; /* Центрирование текста */
+  background-color: transparent; /* Прозрачный фон */
+}
+
+.level img {
+  width: 90px; /* Размер иконки уровня */
+  height: 90px;
+}
+
+#level {
+  font-family: Arial, sans-serif;
+  font-size: 20px; /* Размер шрифта */
+  font-weight: bold; /* Жирный шрифт */
+  color: white; /* Белый цвет текста */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень для читаемости */
+}

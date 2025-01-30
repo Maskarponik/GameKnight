@@ -17,6 +17,7 @@ const NicknameSystem = (() => {
     // Сохранение всех данных о игроках в localStorage
     const savePlayersData = (data) => {
         try {
+			console.log("Сохраняемые данные игроков:", data);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         } catch (error) {
             console.error("Ошибка сохранения данных игроков:", error);
@@ -43,12 +44,21 @@ const NicknameSystem = (() => {
         const playersData = loadPlayersData();
         if (!doesNicknameExist(nickname)) {
             playersData[nickname] = {
-                score: 0,
+                coins: 1000,
                 level: 1,
 				experience: 0,  // Новое поле опыта
                 inventory: [],
                 health: 100, // Начальное здоровье
                 maxHealth: 100, // Максимальное здоровье
+                energy: 100, // Начальное здоровье
+                maxEnergy: 100, // Максимальное здоровье
+				strength: 10,    // Сила
+                attackPower: 20,
+				attackSpeed: 1.0,  // Скорость атаки (чем меньше, тем быстрее удары)
+                criticalChance: 5, // 5% шанс крита
+                criticalMultiplier: 2.0, // Критический урон x2
+                defense: 5, // Уменьшение входящего урона
+                dodgeChance: 3, // 3% шанс уклониться
             };
             savePlayersData(playersData);
         }
@@ -174,10 +184,9 @@ const renderNicknameForm = (container) => {
     container.innerHTML = `
         <form id="nickname-form" class="nickname-form">
             <div class="form-content">
-                <input type="text" id="nickname-input" class="nickname-input" placeholder="Введите никнейм" maxlength="20">
+                <input type="text" id="nickname-input" class="nickname-input" placeholder="Введите никнейм" maxlength="10">
                 <button type="submit" class="nickname-button"></button>
-            </div>
-            <img src="./assets/nickname.png" alt="Nickname Icon" class="nickname-background">			
+            </div>            			
     `;
 
     const form = document.getElementById("nickname-form");

@@ -1,0 +1,150 @@
+/* Общие стили для кнопок */
+button {
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: #777;
+    transform: scale(0.95);
+}
+
+/* Новый контейнер для логов персонажа */
+#character-attack-log {
+    position: absolute;
+    bottom: 500px;
+    left: 400px;
+    z-index: 1110;    
+	font-size: 34px;
+    flex-direction: column; /* Обычный порядок */
+    align-items: flex-start; /* Выравнивание сообщений слева */    
+    flex-wrap: nowrap; /* Сообщения отображаются только в одну строку */    
+	color: red;
+}
+
+/* Сообщения о нанесённом уроне */
+.character-damage-log {
+	position: absolute;
+    padding: 5px 10px;
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    opacity: 0; /* Изначально скрываем */    
+    animation: slideDownFadeIn 0.4s ease-out forwards, slideDownFadeOut 0.3s ease-in 0.7s forwards;
+    white-space: nowrap; /* Запрет на перенос текста */
+	left: 400px;
+	bottom: 90px;
+	z-index: 1100; /* Обеспечиваем видимость поверх других элементов */
+}
+
+/* Анимация появления и исчезновения */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+/* Кнопка обычной атаки */
+#attack-button {
+	position: absolute;
+	width: 110px;
+    height: 80px;
+    bottom: 80px;
+    right: 180px;
+	border: none;
+    margin: 10px auto;
+	background: url('./assets/newattack_button.png') no-repeat center center;
+    display: block; /* Центрируем */
+}
+
+/* Переключатель авто-боя */
+#auto-attack-toggle {
+    position: absolute;
+    background: url(./assets/auto_button.png) no-repeat center center;
+    margin: 10px auto;
+    border: none;
+    display: block;
+    width: 110px;
+    height: 80px;
+    bottom: 80px;
+    right: 50px;
+	transition: transform 0.2s ease, box-shadow 0.2s ease; /* Плавное изменение */
+	cursor: pointer; /* Курсор в виде руки */	
+}
+
+#auto-attack-toggle.active {
+    transform: scale(1.2) !important;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.hidden {
+    display: none; /* Прячем чекбокс */
+}
+
+#auto-skill-toggle:hover {
+    background-color: #007700;
+}
+
+#auto-skill-toggle:active {
+    background-color: #009900;
+}
+
+/* Навыки */
+.skill-button {
+    background-color: #000088;
+    border-color: #0000aa;
+    width: 80px;
+    height: 80px;
+    margin: 5px;
+    border-radius: 50%; /* Круглая форма для навыков */
+    display: inline-block; /* Выстраиваем в ряд */
+}
+
+.skill-button:hover {
+    background-color: #0000aa;
+}
+
+.skill-button:active {
+    background-color: #0000cc;
+}
+
+/* Контейнер для навыков */
+#skills-container {
+	position: absolute;
+	top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px; /* Расстояние между кнопками */
+}
+
+/* Дополнительно для отключенных кнопок */
+button:disabled {
+    background-color: #333;
+    color: #777;
+    border-color: #555;
+    cursor: not-allowed;
+}

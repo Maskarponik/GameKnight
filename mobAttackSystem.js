@@ -2,6 +2,8 @@
 
 import NicknameSystem from "./nicknameSystem.js";
 
+window.isMobAlive = true;  // Глобальный флаг для других скриптов
+
 document.addEventListener("DOMContentLoaded", () => {
     const currentNickname = localStorage.getItem("currentNickname");
 
@@ -39,6 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
             baseDamage: 20,
             attackInterval: 1000,
             healthMultiplier: 140,
+        },
+		ghostknight: {
+            maxLevel: 80,
+            baseDamage: 40,
+            attackInterval: 800,
+            healthMultiplier: 160,
         },
         // Здесь можно добавлять новых мобов
     };
@@ -104,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Функция отображения экрана смерти
     function showDeathScreen() {
         // Создаём сообщение
+		window.isPlayerAlive = false;  // Устанавливаем глобальную переменную
         const message = document.createElement("div");        
         message.style.position = "fixed";
         message.style.top = "35%";
@@ -136,12 +145,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Таймер атак моба
     const attackIntervalId = setInterval(() => {
-        updatePlayerHealth(mobDamage);
+        if (window.isMobAlive && mobCurrentHealth > 0) {
+            updatePlayerHealth(mobDamage);
+        } else {
+            clearInterval(attackIntervalId);  // Остановка атак
+        }
     }, activeMob.attackInterval);
 
     // Инициализация UI
     playerHealthText.textContent = `${health} / ${maxHealth}`;
     mobHealthBar.style.width = "100%"; // Устанавливаем полное здоровье моба при старте
 });
-
-export default MobAttackSystem;

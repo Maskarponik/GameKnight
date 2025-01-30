@@ -6,25 +6,27 @@ import { inventory, saveInventoryToNicknameSystem, updateInventoryUI } from './i
 
 export default class Market {
   constructor(player, buttonId = "open-market-button") {
-    this.nickname = localStorage.getItem("currentNickname"); // Получаем текущий никнейм
-    this.items = Array.isArray(getItems()) ? getItems() : [];
-    this.cart = {}; // Объект для хранения выбранных предметов
-    this.buttonId = buttonId; // ID кнопки открытия магазина
-    this.initOpenMarketButton(); // Привязка функционала открытия магазина
-  }
-  
-    open() {
-      // Проверяем, если магазин уже открыт, ничего не делаем
-      if (document.getElementById("market-container")) {
-          console.warn("Магазин уже открыт!");
-          return;
-      }
-
-      // Создаём интерфейс магазина
-      this.createMarketUI();
+    this.nickname = localStorage.getItem("currentNickname");
+    this.allowedItemIds = [1, 2, 3];
+    this.items = this.filterAllowedItems(getItems());
+    this.cart = {};
+    this.buttonId = buttonId;
+    this.initOpenMarketButton();
+    this.activeDetails = null; // Для управления открытыми описаниями
   }
 
-  // Привязываем событие открытия магазина к кнопке
+  filterAllowedItems(items) {
+    return items.filter(item => this.allowedItemIds.includes(item.id));
+  }
+
+  open() {
+    if (document.getElementById("market-container")) {
+      console.warn("Магазин уже открыт!");
+      return;
+    }
+    this.createMarketUI();
+  }
+
   initOpenMarketButton() {
     const openMarketButton = document.getElementById(this.buttonId);
     if (!openMarketButton) {
@@ -33,44 +35,48 @@ export default class Market {
     }
 
     openMarketButton.addEventListener("click", () => {
-      // Проверяем, если магазин уже открыт, ничего не делаем
       if (document.getElementById("market-container")) return;
-
       this.createMarketUI();
     });
   }
 
-  // Создание интерфейса магазина
   createMarketUI() {
-    // Основное окно магазина
     const marketContainer = document.createElement("div");
     marketContainer.id = "market-container";
+	
+	// Общее окно описания
+    const detailsContainer = document.createElement("div");
+    detailsContainer.className = "item-details-container";
+    marketContainer.appendChild(detailsContainer);
 
-    // Заголовок магазина
-    const title = document.createElement("h2");
-    title.textContent = "Магазин";
-    marketContainer.appendChild(title);
-
-    // Список предметов
     const itemList = document.createElement("div");
     itemList.id = "item-list";
+    
     this.items.forEach((item) => {
-      const itemRow = document.createElement("div");
-      itemRow.className = "item-row";
+      if (!this.allowedItemIds.includes(item.id)) return;
 
-      const itemName = document.createElement("span");
-      itemName.textContent = `${item.name} - ${item.price} монет`;
-      itemName.className = "item-name";
+      // Основной контейнер предмета
+      const itemContainer = document.createElement("div");
+      itemContainer.className = "item-container";
+      
+      // Иконка предмета с обработчиком клика
+      const itemIcon = document.createElement("div");
+      itemIcon.className = "item-icon";
+      itemIcon.style.backgroundImage = `url(${item.image})`;
+      itemIcon.onclick = (e) => this.toggleItemDetails(e, item);
 
-      const addButton = document.createElement("button");
-      addButton.textContent = "+";
-      addButton.className = "add-button";
-      addButton.onclick = () => this.addToCart(item.id);
-
-      itemRow.appendChild(itemName);
-      itemRow.appendChild(addButton);
-      itemList.appendChild(itemRow);
+      // Цена под иконкой
+      const itemPrice = document.createElement("div");
+      itemPrice.className = "item-price";
+      itemPrice.textContent = `${item.price}`;
+       
+      // Собираем основной контейнер
+      itemContainer.appendChild(itemIcon);
+      itemContainer.appendChild(itemPrice);      
+      itemList.appendChild(itemContainer);
+	  
     });
+    
     marketContainer.appendChild(itemList);
 
     // Итоговая информация
@@ -91,23 +97,65 @@ export default class Market {
     buyButton.onclick = () => this.confirmPurchase();
     marketContainer.appendChild(buyButton);
 
-    // Кнопка закрытия магазина
+    // Кнопка закрытия
     const closeButton = document.createElement("button");
     closeButton.id = "close-market-button";
     closeButton.onclick = () => this.closeMarket();
     marketContainer.appendChild(closeButton);
-	
-    // Добавляем окно магазина на страницу
+
     document.body.appendChild(marketContainer);
   }
-    closeMarket() {
-      const marketContainer = document.getElementById("market-container");
-      if (marketContainer) {
-        marketContainer.remove();
-      }
-    }
 
-  // Добавление предметов в корзину
+  toggleItemDetails(event, item) {
+    const detailsContainer = document.querySelector('#market-container .item-details-container');
+  
+    // Проверяем, открыто ли текущее окно, и закрываем его, если оно уже открыто для другого предмета
+    if (detailsContainer.classList.contains('active') && detailsContainer.dataset.itemId === item.id.toString()) {
+        detailsContainer.classList.remove('active');
+        detailsContainer.innerHTML = ''; // Очищаем окно
+        return;
+    }
+  
+    // Очищаем предыдущие обработчики
+    detailsContainer.innerHTML = '';
+	detailsContainer.dataset.itemId = item.id; // Сохраняем ID предмета
+
+    // Создаем содержимое окна
+    const detailsIcon = document.createElement("div");
+    detailsIcon.className = "item-details-icon";
+    detailsIcon.style.backgroundImage = `url(${item.image})`;
+
+    const detailsName = document.createElement("div");
+    detailsName.className = "item-name";
+    detailsName.textContent = item.name;
+		
+    const detailsDescription = document.createElement("div");
+    detailsDescription.className = "item-description";
+    detailsDescription.textContent = item.description;
+
+    const addButton = document.createElement("button");
+    addButton.className = "add-button";
+    addButton.textContent = "Добавить в корзину";
+	addButton.onclick = () => this.addToCart(item.id);
+    
+    // Собираем окно
+    detailsContainer.appendChild(detailsIcon);
+    detailsContainer.appendChild(detailsName);
+    detailsContainer.appendChild(detailsDescription);
+    detailsContainer.appendChild(addButton);
+
+    // Переключаем видимость
+    detailsContainer.classList.add('active');	
+  }
+
+  closeMarket() {
+    const marketContainer = document.getElementById("market-container");
+    if (marketContainer) {
+      marketContainer.remove();
+    }
+    this.activeDetails = null;
+  }
+
   addToCart(itemId) {
     if (!this.cart[itemId]) {
       this.cart[itemId] = 0;
@@ -116,88 +164,74 @@ export default class Market {
     this.updateTotal();
   }
 
-  // Обновление итоговой суммы
   updateTotal() {
-      const total = Object.entries(this.cart).reduce((sum, [itemId, quantity]) => {
-          const item = this.items.find((item) => item.id === parseInt(itemId));
-          return sum + item.price * quantity;
-      }, 0);
+    const total = Object.entries(this.cart).reduce((sum, [itemId, quantity]) => {
+      const item = this.items.find((item) => item.id === parseInt(itemId));
+      return sum + item.price * quantity;
+    }, 0);
 
-      const totalLabel = document.getElementById("total-label");
-      totalLabel.textContent = `Итоговая сумма: ${total} монет`;
+    const totalLabel = document.getElementById("total-label");
+    totalLabel.textContent = `Итоговая сумма: ${total}`;
 
-      if (total === 0) {
-          this.cart = {};
-      }
+    if (total === 0) {
+      this.cart = {};
+    }
   }
 
-  // Подтверждение покупки
   confirmPurchase() {
-      const total = Object.entries(this.cart).reduce((sum, [itemId, quantity]) => {
-          const item = this.items.find((item) => item.id === parseInt(itemId));
-          return sum + item.price * quantity;
-      }, 0);
+    const total = Object.entries(this.cart).reduce((sum, [itemId, quantity]) => {
+      const item = this.items.find((item) => item.id === parseInt(itemId));
+      return sum + item.price * quantity;
+    }, 0);
 
-      // Получаем актуальные данные игрока через NicknameSystem
-      const playerData = NicknameSystem.getPlayerData(this.nickname);
+    const playerData = NicknameSystem.getPlayerData(this.nickname);
 
-      // Если данные игрока существуют
-      if (playerData) {
-          const currentCoins = playerData.coins ; // Берём монеты из NicknameSystem
+    if (playerData) {
+      const currentCoins = playerData.coins;
 
-          if (currentCoins >= total) {
-              // Списываем монеты
-              playerData.coins  -= total;			  
+      if (currentCoins >= total) {
+        playerData.coins -= total;
 
-              // Добавляем предметы в инвентарь              
-              const itemsToAdd = Object.entries(this.cart).map(([itemId, quantity]) => ({
-                id: parseInt(itemId),
-                count: quantity,
-              }));      
-			  
-			  // Используем импортированную переменную inventory напрямую
-              itemsToAdd.forEach(item => {
-                  const existingItem = inventory.find(invItem => invItem.id === item.id);
-                  if (existingItem) {
-                      existingItem.count += item.count;
-                  } else {
-                      inventory.push(item);
-                  }
-              });
-			  			  
-			  // Сохраняем обновлённый инвентарь
-              saveInventoryToNicknameSystem();;
-			  
-			  // Обновляем интерфейс инвентаря
-              const inventoryContainer = document.getElementById("inventory-slots"); 
-              if (inventoryContainer) {
-                  updateInventoryUI(inventoryContainer);
-              } else {
-                  console.error("Элемент инвентаря не найден, обновление интерфейса невозможно.");
-              }		
-			  
-			  // Обновляем данные игрока через NicknameSystem
-              NicknameSystem.updatePlayerData(this.nickname, {
-                  coins: playerData.coins,
-                  inventory: inventory, // Передаём обновлённый инвентарь
-              });
-			  // Обновляем отображение монет на UI
-              const coinsElement = document.getElementById("coins");
-              if (coinsElement) {
-                  coinsElement.textContent = playerData.coins;
-              } else {
-                  console.error("Элемент отображения монет не найден.");
-              }
-			 	             			  
-              // Очищаем корзину и обновляем интерфейс
-              this.cart = {};
-              alert("Покупка успешно завершена!");
-              this.updateTotal();			  
+        const itemsToAdd = Object.entries(this.cart).map(([itemId, quantity]) => ({
+          id: parseInt(itemId),
+          count: quantity,
+        }));
+
+        itemsToAdd.forEach(item => {
+          const emptySlotIndex = inventory.findIndex(slot => !slot || slot.id === null);
+
+          if (emptySlotIndex !== -1) {
+            inventory[emptySlotIndex] = item;
           } else {
-              alert("Недостаточно монет!");
+            alert("Инвентарь заполнен! Освободите место.");
           }
+        });
+
+        saveInventoryToNicknameSystem();
+        
+        const inventoryContainer = document.getElementById("inventory-slots");
+        if (inventoryContainer) {
+          updateInventoryUI(inventoryContainer);
+        }
+
+        NicknameSystem.updatePlayerData(this.nickname, {
+          coins: playerData.coins,
+          inventory: inventory,
+        });
+
+        const coinsElement = document.getElementById("coins");
+        if (coinsElement) {
+          coinsElement.textContent = playerData.coins;
+        }
+
+        this.cart = {};
+        alert("Покупка успешно завершена!");
+        this.updateTotal();
       } else {
-          console.error("Не удалось загрузить данные игрока.");
+        alert("Недостаточно монет!");
       }
+    } else {
+      console.error("Не удалось загрузить данные игрока.");
+    }
   }
 }

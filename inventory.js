@@ -265,11 +265,11 @@ function useItem(slot, index) {
   }
 
   // Сохраняем обновлённые данные
+  console.log("Данные перед обновлением (зелье):", playerData);
   NicknameSystem.updatePlayerData(currentNickname, playerData);
   NicknameSystem.updateInventory(currentNickname, inventory);
   updateInventoryUI(document.getElementById("inventory-slots")); 
-  window.updateUI();  
-  updateUI(); 
+  window.updateUI();   
   console.log(`Текущее здоровье: ${playerData.health}/${playerData.maxHealth}`);  
 }
 

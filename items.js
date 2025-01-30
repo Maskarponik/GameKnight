@@ -19,6 +19,15 @@ const items = [
     price: 200,
 	image: "assets/energy_bottle.png" // Путь к картинке предмета с прозрачным фоном
   },
+  {
+    id: 3,
+    name: "Золотая Склянка здоровья",
+    description: "Восстанавливает 500 здоровья.",
+    type: "consumable",
+    effect: { health: 50000 },
+    price: 500,
+	image: "assets/golden_health_bottle.png" // Путь к картинке предмета с прозрачным фоном
+  },
   // Лут с мобов (предметы, выпадающие после убийства мобов)
   {
     id: 101,
@@ -43,6 +52,14 @@ const items = [
     type: "loot",
     sellPrice: 50,
 	image: "assets/scraps_cloth.png" // Путь к картинке предмета с прозрачным фоном
+  },
+  {
+    id: 104,
+    name: "Пыль Веков",
+    description: "Редкий ингредиент для зелий.",
+    type: "loot",
+    sellPrice: 300,
+	image: "assets/dust_centuries.png" // Путь к картинке предмета с прозрачным фоном
   }
 ];
 

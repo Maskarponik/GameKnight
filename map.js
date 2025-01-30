@@ -43,6 +43,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 	
+	// Заброшенный замок
+    const abandonedcastleButton = document.querySelector('[data-location="abandonedcastle"]');
+    abandonedcastleButton.addEventListener("click", () => {
+        if (spendEnergy(currentNickname, 25)) {
+            window.location.href = "abandoned_castle.html";
+        } else {
+            alert("Недостаточно энергии!");
+        }
+    });
+	
     // Кладбище
     const cemeteryButton = document.querySelector('[data-location="cemetery"]');
     cemeteryButton.addEventListener("click", () => {

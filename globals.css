@@ -55,3 +55,21 @@ body {
   background: url('./assets/ancienttemple_background.png') no-repeat center center;
   background-size: cover;
 }
+
+#ancienttemple-container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  height: 1080px;
+  background: url('./assets/ancienttemple_background.png') no-repeat center center;
+  background-size: cover;
+}
+
+#abandonedcastle-container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  height: 1080px;
+  background: url('./assets/abandonedcastle_background.png') no-repeat center center;
+  background-size: cover;
+}

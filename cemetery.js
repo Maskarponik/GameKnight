@@ -6,10 +6,14 @@ import { getExperienceInfo, gainExpFromMob } from './experienceSystem.js';
 
 import itemModule from './items.js';
 
+import { characterAttackSystem } from './characterAttackSystem.js';
+
 // Деструктурируем необходимые элементы из itemModule
 const { getItemById, getItemsByType, getItemPrice, items } = itemModule;
 
 //import MobAttackSystem from './mobAttackSystem.js';
+
+window.isPlayerAlive = true;  // Игрок жив при начале боя
 
 // Объект для работы с системой никнеймов
 const NicknameSystem = (() => {
@@ -152,15 +156,67 @@ document.addEventListener("DOMContentLoaded", () => {
         energyBarFull.style.clipPath = `inset(0 0 0 ${100 - (energy / maxEnergy) * 100}%)`;
     }
 
-    // Функция обновления UI Скелета
+    // Функция обновления UI гоблина
     function updateSkeletonUI() {
-	  const SkeletonHealthBar = document.getElementById("skeleton-health-fill");
-      if (!SkeletonHealthBar) {
-        console.error("SkeletonHealthBar is missing!");
-        return;
-      }
-      SkeletonHealthBar.style.width = `${(SkeletonHealth / SkeletonMaxHealth) * 100}%`;
+        SkeletonHealthBar.style.width = `${(SkeletonHealth / SkeletonMaxHealth) * 100}%`;
     }
+	
+	const attackSystem = new characterAttackSystem(currentNickname);
+	
+	// Настройка событий для взаимодействия игрока
+    attackSystem.attackButton = document.getElementById('attack-button'); // Кнопка атаки
+    attackSystem.autoAttackToggle = document.getElementById('auto-attack-toggle'); // Тоггл автoбоя
+    attackSystem.skillButtons = [
+        document.getElementById('skill-1'), // Кнопка для первого навыка
+        document.getElementById('skill-2'), // Кнопка для второго навыка
+        document.getElementById('skill-3'), // Кнопка для третьего навыка
+    ];
+
+    // Синхронизация начальных данных
+    attackSystem.playerStats.health = health;
+    attackSystem.playerStats.maxHealth = maxHealth;
+    attackSystem.playerStats.attackPower = attackPower;
+
+    // Логика для управления гоблином
+    window.isMobAlive = true;
+    function updateSkeletonHealth(damage) {
+        SkeletonHealth -= damage;
+        if (SkeletonHealth <= 0) {
+            SkeletonHealth = 0;
+            window.isMobAlive = false;
+            updateSkeletonUI();
+
+            gainExpFromMob(currentNickname, 'Skeleton');
+            const reward = calculateReward();
+            const lootItem = calculateLoot();
+            showVictoryMessage(reward, lootItem);
+        } else {
+            updateSkeletonUI();
+        }
+    }
+
+    // Привязка обработки атак к системе
+    attackSystem.performAttack = function () {
+        if (!window.isMobAlive || !window.isPlayerAlive) return;
+        console.log('Игрок наносит удар скелету!');
+        updateSkeletonHealth(attackSystem.playerStats.attackPower);
+		
+        // Добавляем сообщение об уроне в лог
+        const playerAttackLog = document.getElementById("player-attack-log");
+        if (playerAttackLog) {
+            const damageText = document.createElement("div");
+            damageText.textContent = `Вы нанесли ${attackSystem.playerStats.attackPower} урона!`;
+            damageText.classList.add("damage-log");
+            playerAttackLog.appendChild(damageText);
+
+            // Удаляем сообщение через 2 секунды
+            setTimeout(() => {
+                if (damageText.parentElement) {
+                    damageText.remove();
+                }
+            }, 2000);
+        }
+    };
 
     // Функция расчета награды за победу
     function calculateReward() {
@@ -239,43 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2000);
     }
 
-    // Обработка атаки
-    attackButton.addEventListener("click", () => {
-        if (SkeletonHealth > 0) {            
-			SkeletonHealth -= attackPower;
-            updateSkeletonUI();
-			
-			// Лог атаки персонажа
-            const playerAttackLog = document.getElementById("player-attack-log");
-			
-			// Создаём отдельный элемент для урона
-            const damageText = document.createElement("div");
-            damageText.textContent = `Вы нанесли ${attackPower} урона!`;
-            damageText.classList.add("damage-log");
-
-            // Добавляем новый элемент в контейнер лога
-            playerAttackLog.appendChild(damageText);
-			
-			// Удаляем сообщение через 2 секунды
-            setTimeout(() => {
-                if (damageText.parentElement) {
-                    damageText.remove();
-                }
-            }, 600);
-			
-            if (SkeletonHealth <= 0) {
-                SkeletonHealth = 0;
-                updateSkeletonUI();
-				
-				// Начисление опыта за победу над гоблином
-                gainExpFromMob(currentNickname, "skeleton");
-				
-                const reward = calculateReward();
-                const lootItem = calculateLoot();
-                console.log("Передано в showVictoryMessage:", { reward, lootItem }); // Отладка
-                showVictoryMessage(reward, lootItem);
-            }
-        }
+    document.getElementById('attack-button').addEventListener('click', () => {
+        attackSystem.performAttack();
     });
 
     // Инициализация
@@ -286,26 +307,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function navigateToGame() {
         window.location.href = "game.html";
-    }
-	
-	    // Настройка моба
-    const mobConfig = {
-        id: "skeleton", // ID моба, соответствующий HTML-элементуs
-        maxLevel: 40, // Максимальный уровень моба
-        baseDamage: 10, // Базовый урон
-        attackInterval: 2000, // Интервал атаки в мс
-        healthMultiplier: 100, // Множитель здоровья
-    };
-
-    // Отображаем моба на экране
-    const mobElement = document.getElementById(mobConfig.id);
-    if (mobElement) {
-        mobElement.style.display = "block";
-    } else {
-        console.error("Элемент моба не найден!");
-        return;
-    }
-
-    // Запуск системы урона
-    initializeMobAttackSystem(mobConfig); // Передаём параметры моба
+    }	    
 });

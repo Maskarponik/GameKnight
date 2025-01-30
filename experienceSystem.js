@@ -2,9 +2,10 @@ import NicknameSystem from './nicknameSystem.js';
 
 // Настройки опыта для каждого моба
 const mobExperience = {
-    goblin: 70,  // Моб с ID 1 дает 50 опыта
-    skeleton: 200, // Моб с ID 2 дает 100 опыта
-    guardianwarrior: 300  // Моб с ID 3 дает 200 опыта
+    goblin: 70,  // Моб с ID 1 дает 70 опыта
+    Skeleton: 200, // Моб с ID 2 дает 200 опыта
+    Guardianwarrior: 300,  // Моб с ID 3 дает 300 опыта
+	Ghostknight: 500  // Моб с ID 4 дает 500 опыта
 };
 
 // Опыт, необходимый для повышения уровня

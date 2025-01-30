@@ -24,16 +24,31 @@
     <div class="stats">
       <div class="stat">
         <div class="health-bar">
-          <span class="bar-text" id="health-text">100 / 100</span>
-          <img class="bar-full" id="health-bar" src="./assets/health_bar_full.png" alt="Health Full">
+          <img class="health-bar-frame" src="./assets/health_bar_full.png" alt="Health Frame">
+          <span class="bar-text" id="health-text">100 / 100</span>    
+          <div class="health-bar-full" id="health-bar"></div>
         </div>
       </div>
       <div class="stat">
         <div class="energy-bar">
-          <span class="bar-text" id="energy-text">100 / 100</span>
-          <img class="bar-full" id="energy-bar" src="./assets/energy_bar_full.png" alt="Energy Full">
+          <img class="energy-bar-frame" src="./assets/health_bar_full.png" alt="Energy Frame">	          	  
+          <span class="bar-text" id="energy-text">100 / 100</span>          
+          <div class="energy-bar-full" id="energy-bar"></div>
         </div>
       </div>
+    </div>
+  </div>
+  
+  <div class="frame-coin">
+      <img src="./assets/bar_coin.png" alt="Frame Coins">      
+    </div>
+	    <!-- Элементы Level и Coin -->
+  <div class="coin">
+      <img src="./assets/coin_icon.png" alt="Coins">
+      <span id="coins">1000</span>
+    </div>
+  <div class="level">        
+      <span id="level">1</span>
     </div>
   </div>
    
@@ -43,18 +58,7 @@
       <button class="button train" id="train-button"></button>
       <button class="button eat" id="eat-button"></button>	  
 	  <button class="open-market-button" id="open-market-button"></button>
-
-      <!-- Элементы Level и Coin -->
-      <div class="coin">
-        <img src="./assets/coin_icon.png" alt="Coins">
-        <span id="coins">1000</span>
-      </div>
-      <div class="level">
-        <img src="./assets/level_icon.png" alt="Level Icon">
-        <span id="level">1</span>
-      </div>
-    </div>
-	
+   		
     <div id="player-exp">Опыт: 0 / 1000</div>
 	
     <!-- Кнопка инвентаря -->
@@ -64,7 +68,10 @@
     <div id="overlay"></div>
     <div id="inventory-modal">
       <!-- Кнопка закрытия -->
-      <button id="close-inventory"></button>           
+      <button id="close-inventory"></button>   
+      
+      <!-- Блок для отображения урона -->
+      <div class="damage-text" id="damage-text">20</div>	  
 
       <!-- Слоты инвентаря -->
       <div id="inventory-slots" style="display: grid; grid-template-columns: repeat(10, 80px); grid-template-rows: repeat(6, 80px);">
@@ -81,15 +88,12 @@
     <!-- Модальное окно подтверждения -->
     <div id="confirmation-modal" class="hidden">
 	    <p id="confirmation-text">Вы уверены, что хотите продать все предметы?</p>
-        <button id="confirm-yes-button">Да</button>
-        <button id="confirm-no-button">Нет</button>         
+        <button id="confirm-yes-button"></button>
+        <button id="confirm-no-button"></button>         
 	</div>	
 	
   </div>
-    
-    <!-- Блок для отображения урона -->
-    <div class="damage-text" id="damage-text">DMG 20</div>
-
+  
     <!-- Уведомление о награде -->
     <div id="reward-message" class="reward-message" style="display: none;">
       <div class="reward-content">

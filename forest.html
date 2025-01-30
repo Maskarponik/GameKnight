@@ -6,8 +6,8 @@
   <title>Бой</title>
   <link rel="stylesheet" href="globals.css">
   <link rel="stylesheet" href="forest.css">
-  <link rel="stylesheet" href="nicknameStyles.css">
-  <link rel="stylesheet" href="mobAttackSystem.css">  
+  <link rel="stylesheet" href="mobAttackSystem.css"> 
+  <link rel="stylesheet" href="characterAttackSystem.css">  
 </head>
 <body>
   <div id="forest-container" style="position: absolute; width: 100%; height: 100%;">
@@ -22,14 +22,16 @@
       <div class="stats">
         <div class="stat">
           <div class="health-bar">
-            <span class="bar-text" id="health-text">100 / 100</span>
-            <img class="bar-full" id="health-bar" src="./assets/health_bar_full.png" alt="Health Full">
+            <img class="health-bar-frame" src="./assets/health_bar_full.png" alt="Health Frame">
+            <span class="bar-text" id="health-text">100 / 100</span>    
+            <div class="health-bar-full" id="health-bar"></div>
           </div>
         </div>
         <div class="stat">
           <div class="energy-bar">
-            <span class="bar-text" id="energy-text">100 / 100</span>
-            <img class="bar-full" id="energy-bar" src="./assets/energy_bar_full.png" alt="Energy Full">
+            <img class="energy-bar-frame" src="./assets/health_bar_full.png" alt="Energy Frame">	          	  
+            <span class="bar-text" id="energy-text">100 / 100</span>          
+            <div class="energy-bar-full" id="energy-bar"></div>
           </div>
         </div>
       </div>
@@ -38,49 +40,49 @@
     <!-- Центральная часть с персонажами -->
     <div id="battle-area" style="position: relative; width: 100%; height: calc(100% - 480px);">
       <!-- Персонаж игрока -->
-      <img src="./assets/player.png" alt="Player" style="position: absolute; bottom: -340px; left: 28%; width: 350px; height: auto;">
+      <img src="./assets/player.png" alt="Player" style="position: absolute; bottom: -450px; left: 28%; width: 450px; height: auto;">
 
       <!-- Контейнер для гоблина с полоской здоровья -->
-      <div id="goblin-container" style="position: absolute; bottom: -390px; right: 17%; width: 340px; height: auto;">        
+      <div id="goblin-container" style="position: absolute; bottom: -390px; right: 17%; width: 440px; height: auto;">        
         <!-- Полоска здоровья гоблина -->
-        <div class="goblin-health-bar" style="position: absolute; top: 130px; left: 50%; transform: translateX(-50%); width: 300px; height: 40px; background-color: Transparent; overflow: hidden;">
+        <div class="goblin-health-bar" style="position: absolute; top:-20px; left: 50%; transform: translateX(-50%); width: 300px; height: 40px; background-color: Transparent; overflow: hidden;">
           <div id="goblin-health-fill" style="width: 100%; height: 100%; background: url('./assets/health_bar_full.png') no-repeat left center; background-size: 300px 40px;"></div>
         </div>
 
         <!-- Гоблин -->
-        <img src="./assets/goblin.png" alt="Goblin" id="goblin" style="width: 100%; height: auto;">
+        <img src="./assets/goblin.png" alt="Goblin" id="goblin" style="width: 90%; height: auto;">
       </div>
     </div>
+	<!-- Контейнер для кнопок атаки -->
+    <div id="attack-controls" style="display: flex; justify-content: center; align-items: center; flex-direction: column; position: absolute; bottom: 20%; right: 10px;">
+
+      <!-- Кнопка обычной атаки -->
+      <button id="attack-button" class="attack-button"></button>
+
+      <!-- Переключатель авто-атаки -->	  
+      <button id="auto-attack-toggle" class="auto-attack-toggle">
+	      <input type="checkbox" id="auto-attack-checkbox" class="hidden">
+	  </button>	  
+
+      <!-- Кнопки навыков -->
+      <div id="skill-container" style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+        <button class="skill-button" id="skill-1">1</button>
+        <button class="skill-button" id="skill-2">2</button>
+        <button class="skill-button" id="skill-3">3</button>
+      </div>
+    </div>	
 	
     <!-- Лог атак -->
     <div id="mob-attack-log"></div>
 	
 	<div id="player-attack-log"></div>
 	
-    <!-- Нижняя панель -->
-    <div class="bottom-panel" style="position: absolute;">
-      <button id="attack-button" class="attack" style="
-        position: absolute;
-        bottom: 45px;
-        left: 988px;
-        transform: translateX(-50%);
-        width: 250px;
-        height: 250px;
-        background: url('./assets/attack_icon.png') no-repeat center center;
-        background-size: contain;
-        border: none;
-        cursor: pointer;
-        background-color: transparent;
-      "></button>
-    </div>
-
     <!-- Элементы Level и Coin -->
     <div class="coin">
       <img src="./assets/coin_icon.png" alt="Coins">
       <span id="coins">1000</span>
     </div>
-    <div class="level">
-      <img src="./assets/level_icon.png" alt="Level Icon">
+    <div class="level">      
       <span id="level">1</span>
     </div>
   </div> 
@@ -90,7 +92,8 @@
 
   <script type="module" src="./nicknameSystem.js"></script>  
   <script type="module" src="./inventory.js"></script>
-  <script type="module" src="mobAttackSystem.js"></script>  
+  <script type="module" src="characterAttackSystem.js"></script> 
+  <script type="module" src="mobAttackSystem.js"></script>   
   <script type="module" src="./forest.js"></script> 
   <script type="module" src="experienceSystem.js"></script>
   <script type="module" src="./items.js"></script>  

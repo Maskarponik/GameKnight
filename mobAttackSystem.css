@@ -1,23 +1,29 @@
 /* styles.css */
-.damage-log {
-    position: absolute;
-    bottom: 400px;
-    right: 710px;
-    z-index: 1110;
-    display: flex;
+#player-attack-log {
+    position: relative;
+    bottom: 5px;
+    left: 400px;
+    z-index: 1110;    
+	font-size: 34px;
     flex-direction: column; /* Обычный порядок */
-    align-items: flex-start; /* Выравнивание сообщений слева */
-    gap: 20px; /* Расстояние между сообщениями */
-    flex-wrap: nowrap; /* Сообщения отображаются только в одну строку */ 
-    bottom: 90px;
-    right: 490px;
+    align-items: flex-start; /* Выравнивание сообщений слева */    
+    flex-wrap: nowrap; /* Сообщения отображаются только в одну строку */    
+	color: red;
+
+}
+
+.damage-log {
+	position: absolute;
     padding: 5px 10px;
-    font-size: 20px;
+    font-size: 25px;
     font-weight: bold;
     color: white;
     opacity: 0; /* Изначально скрываем */    
-    animation: slideDownFadeIn 0.5s ease-out forwards, slideDownFadeOut 2s ease-in 2s forwards;
+    animation: slideDownFadeIn 0.4s ease-out forwards, slideDownFadeOut 0.3s ease-in 0.7s forwards;
     white-space: nowrap; /* Запрет на перенос текста */
+	left: 400px;
+	bottom: 90px;
+	z-index: 1100; /* Обеспечиваем видимость поверх других элементов */
 }
 
 /* Анимация появления сверху вниз */
